@@ -10,4 +10,10 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
 
+template<typename T>
+inline T limit(const T& value)
+{
+	return ((value > 255) ? 255 : ((value < 0) ? 0 : value));
+}
+
 #endif //PCH_H

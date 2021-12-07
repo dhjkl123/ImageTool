@@ -32,6 +32,8 @@ public:
 	LPBITMAPINFO GetBitmapInfoAddr() const { return (LPBITMAPINFO)m_pDib; }
 	BOOL IsValid() const { return (m_pDib != NULL); }
 
+	int CopyToClipboard();
+	int PasteFromClipboard();
 
 private:
 	LONG m_nWidth;		// 비트맵 가로 크기 (픽셀 단위)

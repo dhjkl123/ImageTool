@@ -333,3 +333,79 @@ int IppDib::GetPaletteNums() const
 		break;
 	}
 }
+
+int IppDib::CopyToClipboard() 
+{
+	if (!::OpenClipboard(NULL))
+		return FALSE;
+
+	DWORD dwDibSize = GetDibSize();
+	HANDLE hDib = ::GlobalAlloc(GMEM_MOVEABLE | GMEM_DDESHARE, dwDibSize);
+	if (hDib == NULL)
+	{
+		::CloseClipboard();
+		return FALSE;
+	}
+
+	LPVOID lpDib = ::GlobalLock((HGLOBAL)hDib);
+	memcpy(lpDib, GetBitmapInfoAddr(), dwDibSize);
+	::GlobalUnlock(hDib);
+
+	::EmptyClipboard();
+	::SetClipboardData(CF_DIB, hDib);
+	::CloseClipboard();
+
+	return TRUE;
+
+}
+
+int IppDib::PasteFromClipboard()
+{
+	if (!::IsClipboardFormatAvailable(CF_DIB))
+		return FALSE;
+
+	if (!::OpenClipboard(NULL))
+		return FALSE;
+
+	HANDLE hDib = ::GetClipboardData(CF_DIB);
+	if (hDib == NULL)
+	{
+		::CloseClipboard();
+		return FALSE;
+	}
+
+	DWORD dwDibSize = (DWORD)::GlobalSize((HGLOBAL)hDib);
+	LPVOID lpDib = ::GlobalLock((HGLOBAL)hDib);
+
+	LPBITMAPINFOHEADER lpbi = (LPBITMAPINFOHEADER)lpDib;
+	m_nWidth = lpbi->biWidth;
+	m_nHeight = lpbi->biHeight;
+	m_nBitCount = lpbi->biBitCount;
+
+	DWORD dwWidthStep = (DWORD)((m_nWidth * m_nBitCount / 8 + 3) & ~3);
+	DWORD dwSizeImage = m_nHeight * dwWidthStep;
+
+	if (m_nBitCount == 24)
+		m_nDibSize = sizeof(BITMAPINFOHEADER) + dwSizeImage;
+	else
+		m_nDibSize = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1 << m_nBitCount) + dwSizeImage;
+
+	if (m_pDib)
+		Destroy();
+
+	m_pDib = new BYTE[m_nDibSize];
+	if (hDib == NULL)
+	{
+		::GlobalUnlock(hDib);
+		::CloseClipboard();
+		return FALSE;
+	}
+
+	lpDib = ::GlobalLock((HGLOBAL)hDib);
+	memcpy(m_pDib, lpDib, m_nDibSize);
+	::GlobalUnlock(hDib);
+	::CloseClipboard();
+
+	return TRUE;
+
+}
