@@ -184,6 +184,9 @@ protected:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
+
 };
 
 CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX)
@@ -196,6 +199,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, &CAboutDlg::OnUpdateEditPaste)
+
 END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
@@ -224,7 +229,23 @@ void CImageToolApp::SaveCustomState()
 {
 }
 
+void AfxNewBitmap(IppDib& dib)
+{
+	theApp.m_pNewDib = &dib;
+	AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_FILE_NEW);
+}
+
 // CImageToolApp 메시지 처리기
+
+
+
+
+
+void CAboutDlg::OnUpdateEditPaste(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(IsClipboardFormatAvailable(CF_DIB));
+}
 
 
 

@@ -11,6 +11,7 @@
 #endif
 
 #include "ImageToolDoc.h"
+#include "FileNewDlg.h"
 
 #include <propkey.h>
 
@@ -23,6 +24,9 @@
 IMPLEMENT_DYNCREATE(CImageToolDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
+	ON_COMMAND(ID_WINDOW_DUPUCATE, &CImageToolDoc::OnWindowDupucate)
+	ON_COMMAND(ID_EDIT_COPY, &CImageToolDoc::OnEditCopy)
+	ON_COMMAND(ID_EDIT_PASTE, &CImageToolDoc::OnEditPaste)
 END_MESSAGE_MAP()
 
 
@@ -46,7 +50,33 @@ BOOL CImageToolDoc::OnNewDocument()
 	// TODO: 여기에 재초기화 코드를 추가합니다.
 	// SDI 문서는 이 문서를 다시 사용합니다.
 
-	return TRUE;
+	BOOL ret = FALSE;
+
+
+	if (theApp.m_pNewDib == NULL)
+	{
+		CFileNewDlg Dlg;
+		if (Dlg.DoModal() == IDOK)
+		{
+			if (Dlg.m_nType == 0)
+				ret = m_Dib.CreatGrayBitmap(Dlg.m_nWidth, Dlg.m_nHeight);
+			else
+				ret = m_Dib.CreatRgbBitmap(Dlg.m_nWidth, Dlg.m_nHeight);
+		}
+		else
+		{
+			ret = FALSE;
+		}
+	}
+	else
+	{
+		m_Dib = *(theApp.m_pNewDib);
+		theApp.m_pNewDib = NULL;
+		ret = TRUE;
+	}
+
+
+	return ret;
 }
 
 
@@ -136,3 +166,46 @@ void CImageToolDoc::Dump(CDumpContext& dc) const
 
 
 // CImageToolDoc 명령
+
+
+BOOL CImageToolDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+
+	return m_Dib.Load(CT2A(lpszPathName));
+}
+
+
+BOOL CImageToolDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return m_Dib.Save(CT2A(lpszPathName));
+}
+
+
+void CImageToolDoc::OnWindowDupucate()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	AfxNewBitmap(m_Dib);
+}
+
+
+void CImageToolDoc::OnEditCopy()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	if (m_Dib.IsValid())
+		m_Dib.CopyToClipboard();
+}
+
+
+void CImageToolDoc::OnEditPaste()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	IppDib dib;
+	if (dib.PasteFromClipboard())
+		AfxNewBitmap(dib);
+}

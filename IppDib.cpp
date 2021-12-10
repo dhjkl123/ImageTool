@@ -194,8 +194,9 @@ BOOL IppDib::LoadBMP(const char* filename)
 		return FALSE;
 	}
 
-	fseek(fp, sizeof(BITMAPINFOHEADER), SEEK_SET);
-	if (fread(m_pDib, sizeof(BYTE), m_nDibSize, fp) != m_nDibSize)
+	fseek(fp, sizeof(BITMAPFILEHEADER), SEEK_SET);
+	DWORD dwRet = fread(m_pDib, sizeof(BYTE), m_nDibSize, fp);
+	if (dwRet != m_nDibSize)
 	{
 		delete[] m_pDib;
 		m_pDib = NULL;

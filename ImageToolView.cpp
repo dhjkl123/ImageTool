@@ -26,17 +26,27 @@ IMPLEMENT_DYNCREATE(CImageToolView, CScrollView)
 
 BEGIN_MESSAGE_MAP(CImageToolView, CScrollView)
 	// 표준 인쇄 명령입니다.
+	ON_COMMAND(ID_VIEW_ZOOM1, &CImageToolView::OnViewZoom1)
+	ON_COMMAND(ID_VIEW_ZOOM2, &CImageToolView::OnViewZoom2)
+	ON_COMMAND(ID_VIEW_ZOOM3, &CImageToolView::OnViewZoom3)
+	ON_COMMAND(ID_VIEW_ZOOM4, &CImageToolView::OnViewZoom4)
 	ON_COMMAND(ID_FILE_PRINT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CImageToolView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_ERASEBKGND()
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM1, &CImageToolView::OnUpdateViewZoom1)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM2, &CImageToolView::OnUpdateViewZoom2)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM3, &CImageToolView::OnUpdateViewZoom3)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM4, &CImageToolView::OnUpdateViewZoom4)
 END_MESSAGE_MAP()
 
 // CImageToolView 생성/소멸
 
-CImageToolView::CImageToolView() noexcept
+CImageToolView::CImageToolView() noexcept 
+	:m_nZoom(1)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -59,7 +69,7 @@ BOOL CImageToolView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CImageToolView 그리기
 
-void CImageToolView::OnDraw(CDC* /*pDC*/)
+void CImageToolView::OnDraw(CDC* pDC)
 {
 	CImageToolDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -67,16 +77,39 @@ void CImageToolView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+	if (pDoc->m_Dib.IsValid())
+	{
+		int w = pDoc->m_Dib.GetWidth();
+		int h = pDoc->m_Dib.GetHeight();
+		pDoc->m_Dib.Draw(pDC->m_hDC, 0, 0, w * m_nZoom, h * m_nZoom,0,0,w,h,(DWORD)0); //?
+		//pDoc->m_Dib.Draw(pDC->m_hDC, 0, 0);
+	}
+
 }
 
 void CImageToolView::OnInitialUpdate()
 {
 	CScrollView::OnInitialUpdate();
 
-	CSize sizeTotal;
-	// TODO: 이 뷰의 전체 크기를 계산합니다.
-	sizeTotal.cx = sizeTotal.cy = 100;
-	SetScrollSizes(MM_TEXT, sizeTotal);
+	SetScrollSizeToFit();
+
+	//CSize sizeTotal;
+	//// TODO: 이 뷰의 전체 크기를 계산합니다.
+	//CImageToolDoc* pDoc = GetDocument();
+	//if (pDoc->m_Dib.IsValid())
+	//{
+	//	sizeTotal.cx = pDoc->m_Dib.GetWidth();
+	//	sizeTotal.cy = pDoc->m_Dib.GetHeight();
+	//}
+	//else
+	//{
+	//	sizeTotal.cx = sizeTotal.cy = 100;
+	//}
+
+	//SetScrollSizes(MM_TEXT, sizeTotal);
+
+	//ResizeParentToFit(1);
+
 }
 
 
@@ -147,12 +180,102 @@ CImageToolDoc* CImageToolView::GetDocument() const // 디버그되지 않은 버
 void CImageToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	IppDib dib;
-	dib.Load("harris_test3.bmp");
-
-	CClientDC dc(this);
-	dib.Draw(dc.m_hDC, point.x, point.y);
 
 
 	CScrollView::OnLButtonDown(nFlags, point);
+}
+
+
+BOOL CImageToolView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CBrush br;
+	br.CreateHatchBrush(HS_DIAGCROSS, RGB(200, 200, 200));
+	FillOutsideRect(pDC, &br);
+
+	return TRUE;
+	//return CScrollView::OnEraseBkgnd(pDC);
+}
+
+void CImageToolView::SetScrollSizeToFit()
+{
+	CSize sizeTotal;
+
+	CImageToolDoc* pDoc = GetDocument();
+	if (pDoc->m_Dib.IsValid())
+	{
+		int w = pDoc->m_Dib.GetWidth();
+		int h = pDoc->m_Dib.GetHeight();
+
+		sizeTotal.cx = w * m_nZoom;
+		sizeTotal.cy = h * m_nZoom;
+	}
+	else
+	{
+		sizeTotal.cx = sizeTotal.cy = 100;
+	}
+
+	SetScrollSizes(MM_TEXT, sizeTotal);
+
+	ResizeParentToFit(1);
+}
+
+void CImageToolView::OnViewZoom1()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_nZoom = 1;
+	SetScrollSizeToFit();
+	Invalidate(1);
+}
+
+
+void CImageToolView::OnViewZoom2()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_nZoom = 2;
+	SetScrollSizeToFit();
+	Invalidate(1);
+}
+
+
+void CImageToolView::OnViewZoom3()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_nZoom = 3;
+	SetScrollSizeToFit();
+	Invalidate(1);
+}
+
+
+void CImageToolView::OnViewZoom4()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_nZoom = 4;
+	SetScrollSizeToFit();
+	Invalidate(1);
+}
+
+
+void CImageToolView::OnUpdateViewZoom1(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->SetCheck(m_nZoom == 1);
+}
+
+void CImageToolView::OnUpdateViewZoom2(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->SetCheck(m_nZoom == 2);
+}
+
+void CImageToolView::OnUpdateViewZoom3(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->SetCheck(m_nZoom == 3);
+}
+
+void CImageToolView::OnUpdateViewZoom4(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->SetCheck(m_nZoom == 4);
 }

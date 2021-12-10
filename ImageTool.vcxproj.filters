@@ -51,6 +51,18 @@
     <ClInclude Include="IppDib.h">
       <Filter>IppImage</Filter>
     </ClInclude>
+    <ClInclude Include="IppImage.h">
+      <Filter>IppImage</Filter>
+    </ClInclude>
+    <ClInclude Include="RGBBYTE.h">
+      <Filter>IppImage</Filter>
+    </ClInclude>
+    <ClInclude Include="IppConvert.h">
+      <Filter>IppImage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileNewDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImageTool.cpp">
@@ -76,6 +88,15 @@
     </ClCompile>
     <ClCompile Include="IppDib.cpp">
       <Filter>IppImage</Filter>
+    </ClCompile>
+    <ClCompile Include="IppImage.cpp">
+      <Filter>IppImage</Filter>
+    </ClCompile>
+    <ClCompile Include="IppConvertcpp.cpp">
+      <Filter>IppImage</Filter>
+    </ClCompile>
+    <ClCompile Include="FileNewDlg.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,7 @@ public:
 
 // 작업입니다.
 public:
-
+	int m_nZoom;
 // 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -46,6 +46,17 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnViewZoom1();
+	afx_msg void OnViewZoom2();
+	afx_msg void OnViewZoom3();
+	afx_msg void OnViewZoom4();
+
+	void SetScrollSizeToFit();
+	afx_msg void OnUpdateViewZoom1(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoom2(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoom3(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateViewZoom4(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // ImageToolView.cpp의 디버그 버전
