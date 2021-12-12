@@ -33,11 +33,13 @@ public:
 
 // 특성입니다.
 protected:
-	CMFCTabCtrl	m_wndTabs;
+	//CMFCTabCtrl	m_wndTabs;
 
-	COutputList m_wndOutputBuild;
-	COutputList m_wndOutputDebug;
-	COutputList m_wndOutputFind;
+	//COutputList m_wndOutputBuild;
+	//COutputList m_wndOutputDebug;
+	//COutputList m_wndOutputFind;
+
+	COutputList m_wndOutputInfo;
 
 protected:
 	void FillBuildWindow();
@@ -49,6 +51,8 @@ protected:
 // 구현입니다.
 public:
 	virtual ~COutputWnd();
+
+	void AddString(CString msg);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

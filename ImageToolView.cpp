@@ -14,6 +14,7 @@
 #include "ImageToolView.h"
 
 #include "IppDib.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,6 +42,7 @@ BEGIN_MESSAGE_MAP(CImageToolView, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM2, &CImageToolView::OnUpdateViewZoom2)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM3, &CImageToolView::OnUpdateViewZoom3)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOM4, &CImageToolView::OnUpdateViewZoom4)
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CImageToolView 생성/소멸
@@ -278,4 +280,45 @@ void CImageToolView::OnUpdateViewZoom4(CCmdUI* pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	pCmdUI->SetCheck(m_nZoom == 4);
+}
+
+
+void CImageToolView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CPoint pt = point + GetScrollPosition();
+	pt.x /= m_nZoom;
+	pt.y /= m_nZoom;
+	ShowImageInfo(pt);
+
+	CScrollView::OnMouseMove(nFlags, point);
+}
+
+void CImageToolView::ShowImageInfo(CPoint point)
+{
+	CMainFrame* pMain = (CMainFrame*)AfxGetMainWnd();
+	CImageToolDoc* pDoc = GetDocument();
+	int w = pDoc->m_Dib.GetWidth();
+	int h = pDoc->m_Dib.GetHeight();
+	int c = pDoc->m_Dib.GetPaletteNums();
+
+	CString str;
+
+	if (point.x >= 0 && point.y >= 0 && point.x < w && point.y < h)
+	{
+		str.Format(_T("(%d, %d)"), point.x, point.y);
+		pMain->m_wndStatusBar.SetPaneText(0, str);
+	}
+
+	if (c == 0)
+	{
+		str.Format(_T("W:%d, H:%d, C:16M"), w, h);
+	}
+	else
+	{
+		str.Format(_T("W:%d, H:%d, C:%d"), w, h,c);
+	}
+
+	pMain->m_wndStatusBar.SetPaneText(1, str);
+
 }

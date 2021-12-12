@@ -13,6 +13,8 @@
 #include "ImageToolDoc.h"
 #include "FileNewDlg.h"
 
+#include "MainFrm.h"
+
 #include <propkey.h>
 
 #ifdef _DEBUG
@@ -174,8 +176,15 @@ BOOL CImageToolDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		return FALSE;
 
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-
-	return m_Dib.Load(CT2A(lpszPathName));
+	BOOL  res = m_Dib.Load(CT2A(lpszPathName));
+	if (res)
+	{
+		CMainFrame* pMain = (CMainFrame * )AfxGetMainWnd();
+		CString str; str.Format(_T("[파일 열기] 파일경로 : %s, 가로 크기 : %d픽셀, 세로 크기: %d픽셀, 색상수: %d"), 
+			lpszPathName, m_Dib.GetWidth(), m_Dib.GetHeight(), 0x01 << m_Dib.GetBitCount());
+		pMain->m_wndOutput.AddString(str);
+	}
+	return res;
 }
 
 

@@ -27,7 +27,7 @@ protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-
+	void ShowImageInfo(CPoint point);
 // 구현입니다.
 public:
 	virtual ~CImageToolView();
@@ -57,6 +57,7 @@ public:
 	afx_msg void OnUpdateViewZoom2(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewZoom3(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewZoom4(CCmdUI* pCmdUI);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ImageToolView.cpp의 디버그 버전
