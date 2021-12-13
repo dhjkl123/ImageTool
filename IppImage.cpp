@@ -2,11 +2,7 @@
 #include "IppImage.h"
 #include "memory.h"
 
-template<typename T>
-IppImage<T>::IppImage() :m_nWidth(0), m_nHeight(0), m_tPixels(NULL)
-{
 
-}
 
 template<typename T>
 IppImage<T>::IppImage(int w, int h) :m_nWidth(w), m_nHeight(h), m_tPixels(NULL)
@@ -34,15 +30,7 @@ IppImage<T>::IppImage(const IppImage<T>& img) :m_nWidth(img.m_nWidth), m_nHeight
 	}
 }
 
-template<typename T>
-IppImage<T>::~IppImage()
-{
-	if (m_tPixels != NULL)
-	{
-		delete[] m_tPixels[0];
-		delete[] m_tPixels;
-	}
-}
+
 
 //template<typename T>
 //void IppImage<T>::CreateImage(int w, int h)

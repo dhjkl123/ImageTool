@@ -16,6 +16,12 @@
     <Filter Include="IppImage">
       <UniqueIdentifier>{896ec0a0-573d-4b18-bc52-3c274658730a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IppImage\소스 파일">
+      <UniqueIdentifier>{d77af921-de32-47c1-ad79-f022f3e533d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IppImage\헤더 파일">
+      <UniqueIdentifier>{99f9f5d0-cf60-4f31-805c-f2a5ecf59b0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageTool.h">
@@ -48,19 +54,25 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="IppDib.h">
-      <Filter>IppImage</Filter>
-    </ClInclude>
-    <ClInclude Include="IppImage.h">
-      <Filter>IppImage</Filter>
-    </ClInclude>
-    <ClInclude Include="RGBBYTE.h">
-      <Filter>IppImage</Filter>
+    <ClInclude Include="FileNewDlg.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="IppConvert.h">
-      <Filter>IppImage</Filter>
+      <Filter>IppImage\헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FileNewDlg.h">
+    <ClInclude Include="IppDib.h">
+      <Filter>IppImage\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IppImage.h">
+      <Filter>IppImage\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RGBBYTE.h">
+      <Filter>IppImage\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IppEnhance.h">
+      <Filter>IppImage\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BrightContrast.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,16 +98,22 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="IppDib.cpp">
-      <Filter>IppImage</Filter>
-    </ClCompile>
-    <ClCompile Include="IppImage.cpp">
-      <Filter>IppImage</Filter>
+    <ClCompile Include="FileNewDlg.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="IppConvertcpp.cpp">
-      <Filter>IppImage</Filter>
+      <Filter>IppImage\소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FileNewDlg.cpp">
+    <ClCompile Include="IppDib.cpp">
+      <Filter>IppImage\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IppImage.cpp">
+      <Filter>IppImage\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IppEngance.cpp">
+      <Filter>IppImage\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BrightContrast.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -52,4 +52,7 @@ public:
 	afx_msg void OnWindowDupucate();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
+	afx_msg void OnImageInverse();
+	afx_msg void OnUpdateImageInverse(CCmdUI* pCmdUI);
+	afx_msg void OnBrightcontrast();
 };

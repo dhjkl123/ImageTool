@@ -11,10 +11,25 @@ protected:
 	T** m_tPixels;
 
 public:
-	IppImage();
+
+	//template<typename T>
+	IppImage<T>::IppImage() :m_nWidth(0), m_nHeight(0), m_tPixels(NULL)
+	{
+
+	}
+
 	IppImage(int w, int h);
 	IppImage(const IppImage<T>& img);
-	~IppImage();
+
+	//template<typename T>
+	IppImage<T>::~IppImage()
+	{
+		if (m_tPixels != NULL)
+		{
+			delete[] m_tPixels[0];
+			delete[] m_tPixels;
+		}
+	}
 
 	void CreateImage(int w, int h) // template 사용시 cpp h 분리 X
 	{

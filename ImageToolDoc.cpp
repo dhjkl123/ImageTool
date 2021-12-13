@@ -10,6 +10,12 @@
 #include "ImageTool.h"
 #endif
 
+#include "IppImage.h"
+#include "IppConvert.h"
+#include "IppEnhance.h"
+
+#include "BrightContrast.h"
+
 #include "ImageToolDoc.h"
 #include "FileNewDlg.h"
 
@@ -21,6 +27,15 @@
 #define new DEBUG_NEW
 #endif
 
+
+#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)\
+	IppByteImage img;\
+	IppDibToImage(m_Dib, img);
+
+#define CONVERT_IMAGE_TO_DIB(img, dib)\
+	IppDib dib;\
+	IppImageToDib(img, dib);
+
 // CImageToolDoc
 
 IMPLEMENT_DYNCREATE(CImageToolDoc, CDocument)
@@ -29,6 +44,9 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_WINDOW_DUPUCATE, &CImageToolDoc::OnWindowDupucate)
 	ON_COMMAND(ID_EDIT_COPY, &CImageToolDoc::OnEditCopy)
 	ON_COMMAND(ID_EDIT_PASTE, &CImageToolDoc::OnEditPaste)
+	ON_COMMAND(ID_IMAGE_INVERSE, &CImageToolDoc::OnImageInverse)
+	ON_UPDATE_COMMAND_UI(ID_IMAGE_INVERSE, &CImageToolDoc::OnUpdateImageInverse)
+	ON_COMMAND(ID_BRIGHTCONTRAST, &CImageToolDoc::OnBrightcontrast)
 END_MESSAGE_MAP()
 
 
@@ -217,4 +235,40 @@ void CImageToolDoc::OnEditPaste()
 	IppDib dib;
 	if (dib.PasteFromClipboard())
 		AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnImageInverse()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib,img)
+	IppInverse(img);
+
+	CONVERT_IMAGE_TO_DIB(img, dib)
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnUpdateImageInverse(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(m_Dib.GetBitCount() == 8);
+}
+
+
+void CImageToolDoc::OnBrightcontrast()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CBrightContrast dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppBrightness(img, dlg.m_nBright);
+		IppContrast(img, dlg.m_nContrast);
+		CONVERT_IMAGE_TO_DIB(img, dib)
+
+		AfxNewBitmap(dib);
+
+	}
 }

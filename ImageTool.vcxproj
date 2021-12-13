@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BrightContrast.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="FileNewDlg.h" />
     <ClInclude Include="framework.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="ImageToolView.h" />
     <ClInclude Include="IppConvert.h" />
     <ClInclude Include="IppDib.h" />
+    <ClInclude Include="IppEnhance.h" />
     <ClInclude Include="IppImage.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
@@ -200,6 +202,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BrightContrast.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="FileNewDlg.cpp" />
     <ClCompile Include="ImageTool.cpp" />
@@ -207,6 +210,7 @@
     <ClCompile Include="ImageToolView.cpp" />
     <ClCompile Include="IppConvertcpp.cpp" />
     <ClCompile Include="IppDib.cpp" />
+    <ClCompile Include="IppEngance.cpp" />
     <ClCompile Include="IppImage.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
