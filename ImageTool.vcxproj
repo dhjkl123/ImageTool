@@ -188,6 +188,7 @@
     <ClInclude Include="FileNewDlg.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GammaDlg.h" />
+    <ClInclude Include="HistogramDlg.h" />
     <ClInclude Include="ImageTool.h" />
     <ClInclude Include="ImageToolDoc.h" />
     <ClInclude Include="ImageToolView.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="FileNewDlg.cpp" />
     <ClCompile Include="GammaDlg.cpp" />
+    <ClCompile Include="HistogramDlg.cpp" />
     <ClCompile Include="ImageTool.cpp" />
     <ClCompile Include="ImageToolDoc.cpp" />
     <ClCompile Include="ImageToolView.cpp" />

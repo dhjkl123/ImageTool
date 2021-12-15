@@ -56,4 +56,7 @@ public:
 	afx_msg void OnUpdateImageInverse(CCmdUI* pCmdUI);
 	afx_msg void OnBrightcontrast();
 	afx_msg void OnGamma();
+	afx_msg void OnHistogram();
+	afx_msg void OnHistogramStretch();
+	afx_msg void OnHistogramEq();
 };
