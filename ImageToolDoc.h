@@ -59,4 +59,5 @@ public:
 	afx_msg void OnHistogram();
 	afx_msg void OnHistogramStretch();
 	afx_msg void OnHistogramEq();
+	afx_msg void OnLogical();
 };

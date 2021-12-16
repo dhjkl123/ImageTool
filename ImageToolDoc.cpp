@@ -22,6 +22,8 @@
 
 #include "HistogramDlg.h"
 
+#include "ImageLogicalDlg.h"
+
 #include "MainFrm.h"
 
 #include <propkey.h>
@@ -54,6 +56,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_HISTOGRAM, &CImageToolDoc::OnHistogram)
 	ON_COMMAND(ID_HISTOGRAM_STRETCH, &CImageToolDoc::OnHistogramStretch)
 	ON_COMMAND(ID_HISTOGRAM_EQ, &CImageToolDoc::OnHistogramEq)
+	ON_COMMAND(ID_LOGICAL, &CImageToolDoc::OnLogical)
 END_MESSAGE_MAP()
 
 
@@ -326,4 +329,45 @@ void CImageToolDoc::OnHistogramEq()
 	CONVERT_IMAGE_TO_DIB(img, dib)
 
 		AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnLogical()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CImageLogicalDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CImageToolDoc* pDoc1 = (CImageToolDoc*)dlg.m_pDoc1;
+		CImageToolDoc* pDoc2 = (CImageToolDoc*)dlg.m_pDoc2;
+
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc1->m_Dib, img1);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc2->m_Dib, img2);
+
+		IppByteImage img3;
+
+		bool ret = false;
+
+		switch (dlg.m_nFunc)
+		{
+		case 0:ret = IppAdd(img1, img2, img3); break;
+		case 1:ret = IppSub(img1, img2, img3); break;
+		case 2:ret = IppAvg(img1, img2, img3); break;
+		case 3:ret = IppDiff(img1, img2, img3); break;
+		case 4:ret = IppAND(img1, img2, img3); break;
+		case 5:ret = IppOR(img1, img2, img3); break;
+
+		defaut:
+			break;
+		}
+
+		if (ret)
+		{
+			CONVERT_IMAGE_TO_DIB(img3, dib);
+
+			AfxNewBitmap(dib);
+
+		}
+
+	}
 }

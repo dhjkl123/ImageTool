@@ -21,7 +21,7 @@ class CImageToolApp : public CWinAppEx
 public:
 	CImageToolApp() noexcept;
 	IppDib* m_pNewDib;
-
+	CMultiDocTemplate* m_ImageDocTemplate;
 // 재정의입니다.
 public:
 	virtual BOOL InitInstance();
