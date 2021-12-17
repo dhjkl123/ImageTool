@@ -22,3 +22,5 @@ bool IppDiff(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
 
 bool IppAND(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
 bool IppOR(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
+
+bool IppBitPlane(IppByteImage& img1, IppByteImage& img2, int bit);

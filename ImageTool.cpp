@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CImageToolApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+	ON_COMMAND(ID_WINDOW_CLOSE, &CImageToolApp::OnWindowClose)
 END_MESSAGE_MAP()
 
 
@@ -250,3 +251,10 @@ void CAboutDlg::OnUpdateEditPaste(CCmdUI* pCmdUI)
 
 
 
+
+
+void CImageToolApp::OnWindowClose()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CloseAllDocuments(1);
+}

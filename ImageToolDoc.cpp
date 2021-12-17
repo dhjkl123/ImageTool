@@ -57,6 +57,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_HISTOGRAM_STRETCH, &CImageToolDoc::OnHistogramStretch)
 	ON_COMMAND(ID_HISTOGRAM_EQ, &CImageToolDoc::OnHistogramEq)
 	ON_COMMAND(ID_LOGICAL, &CImageToolDoc::OnLogical)
+	ON_COMMAND(ID_BITPLAIN, &CImageToolDoc::OnBitplain)
 END_MESSAGE_MAP()
 
 
@@ -369,5 +370,20 @@ void CImageToolDoc::OnLogical()
 
 		}
 
+	}
+}
+
+
+void CImageToolDoc::OnBitplain()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgPlane;
+
+	for (int i = 0 ;i < 8; i++)
+	{
+		IppBitPlane(img, imgPlane, i);
+		CONVERT_IMAGE_TO_DIB(imgPlane, dib)
+			AfxNewBitmap(dib);
 	}
 }
