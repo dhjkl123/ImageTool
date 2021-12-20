@@ -13,6 +13,7 @@
 #include "IppImage.h"
 #include "IppConvert.h"
 #include "IppEnhance.h"
+#include "IppFilter.h"
 
 #include "BrightContrast.h"
 #include "GammaDlg.h"
@@ -21,8 +22,10 @@
 #include "FileNewDlg.h"
 
 #include "HistogramDlg.h"
-
 #include "ImageLogicalDlg.h"
+#include "GaussianDlg.h"
+#include "NoiseDlg.h"
+#include "DiffDlg.h"
 
 #include "MainFrm.h"
 
@@ -58,6 +61,15 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_HISTOGRAM_EQ, &CImageToolDoc::OnHistogramEq)
 	ON_COMMAND(ID_LOGICAL, &CImageToolDoc::OnLogical)
 	ON_COMMAND(ID_BITPLAIN, &CImageToolDoc::OnBitplain)
+	ON_COMMAND(ID_FILTER_MEAN, &CImageToolDoc::OnFilterMean)
+	ON_COMMAND(ID_FILTER_WHIGHTED_MEAN, &CImageToolDoc::OnFilterWhightedMean)
+	ON_COMMAND(ID_FILTER_GAUSSIAN, &CImageToolDoc::OnFilterGaussian)
+	ON_COMMAND(ID_FILTER_LAPLACIAN, &CImageToolDoc::OnFilterLaplacian)
+	ON_COMMAND(ID_FILTER_UNSHARP_MASK, &CImageToolDoc::OnFilterUnsharpMask)
+	ON_COMMAND(ID_FILTER_HIGHBOOST, &CImageToolDoc::OnFilterHighboost)
+	ON_COMMAND(ID_NOISE, &CImageToolDoc::OnNoise)
+	ON_COMMAND(ID_MEDIAN, &CImageToolDoc::OnMedian)
+	ON_COMMAND(ID_DIFF, &CImageToolDoc::OnDiff)
 END_MESSAGE_MAP()
 
 
@@ -386,4 +398,131 @@ void CImageToolDoc::OnBitplain()
 		CONVERT_IMAGE_TO_DIB(imgPlane, dib)
 			AfxNewBitmap(dib);
 	}
+}
+
+
+void CImageToolDoc::OnFilterMean()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterMean(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnFilterWhightedMean()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterWeightedMean(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnFilterGaussian()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CGaussianDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppFilterGaussian(imgSrc, imgDst,dlg.m_fSigma);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
+}
+
+
+void CImageToolDoc::OnFilterLaplacian()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterLaplacian(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnFilterUnsharpMask()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterUnsharpMask(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnFilterHighboost()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	float alpha = 1.2f;
+	IppFilterHighboost(imgSrc, imgDst, alpha);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnNoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CNoiseDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+
+		if (dlg.m_nNoiseType == 0)
+			IppNoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
+		else
+			IppNoiseSaltPepper(imgSrc, imgDst, dlg.m_nAmount);
+
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
+}
+
+
+void CImageToolDoc::OnMedian()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterMedian(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnDiff()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CDiffDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppFloatImage imgDst;
+		IppFilterDiffusion(imgSrc, imgDst,dlg.m_fLambda,dlg.m_fK,dlg.m_nIter);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
+
 }

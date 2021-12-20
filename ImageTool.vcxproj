@@ -185,9 +185,11 @@
   <ItemGroup>
     <ClInclude Include="BrightContrast.h" />
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="DiffDlg.h" />
     <ClInclude Include="FileNewDlg.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GammaDlg.h" />
+    <ClInclude Include="GaussianDlg.h" />
     <ClInclude Include="HistogramDlg.h" />
     <ClInclude Include="ImageLogicalDlg.h" />
     <ClInclude Include="ImageTool.h" />
@@ -196,8 +198,10 @@
     <ClInclude Include="IppConvert.h" />
     <ClInclude Include="IppDib.h" />
     <ClInclude Include="IppEnhance.h" />
+    <ClInclude Include="IppFilter.h" />
     <ClInclude Include="IppImage.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="NoiseDlg.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -207,8 +211,11 @@
   <ItemGroup>
     <ClCompile Include="BrightContrast.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="DiffDlg.cpp" />
+    <ClCompile Include="NoiseDlg.cpp" />
     <ClCompile Include="FileNewDlg.cpp" />
     <ClCompile Include="GammaDlg.cpp" />
+    <ClCompile Include="GaussianDlg.cpp" />
     <ClCompile Include="HistogramDlg.cpp" />
     <ClCompile Include="ImageLogicalDlg.cpp" />
     <ClCompile Include="ImageTool.cpp" />
@@ -217,6 +224,7 @@
     <ClCompile Include="IppConvertcpp.cpp" />
     <ClCompile Include="IppDib.cpp" />
     <ClCompile Include="IppEngance.cpp" />
+    <ClCompile Include="IppFilter.cpp" />
     <ClCompile Include="IppImage.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />

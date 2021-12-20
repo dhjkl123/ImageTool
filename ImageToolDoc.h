@@ -61,4 +61,13 @@ public:
 	afx_msg void OnHistogramEq();
 	afx_msg void OnLogical();
 	afx_msg void OnBitplain();
+	afx_msg void OnFilterMean();
+	afx_msg void OnFilterWhightedMean();
+	afx_msg void OnFilterGaussian();
+	afx_msg void OnFilterLaplacian();
+	afx_msg void OnFilterUnsharpMask();
+	afx_msg void OnFilterHighboost();
+	afx_msg void OnNoise();
+	afx_msg void OnMedian();
+	afx_msg void OnDiff();
 };

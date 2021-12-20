@@ -18,8 +18,29 @@ public:
 
 	}
 
-	IppImage(int w, int h);
-	IppImage(const IppImage<T>& img);
+	IppImage(int w, int h) :m_nWidth(w), m_nHeight(h), m_tPixels(NULL)
+	{
+		m_tPixels = new T * [sizeof(T*) * m_nHeight];
+		m_tPixels[0] = new T[sizeof(T) * m_nWidth * m_nHeight];
+
+		for (int i = 1; i < m_nHeight; i++)
+			m_tPixels[i] = m_tPixels[i - 1] + m_nWidth;
+
+		memset(m_tPixels[0], 0, sizeof(T) * m_nWidth * m_nHeight);
+	}
+
+	IppImage(const IppImage<T>& img) :m_nWidth(img.m_nWidth), m_nHeight(img.m_nHeight), m_tPixels(NULL)
+	{
+		if (img.IsValid())
+		{
+			m_tPixels = new T * [sizeof(T*) * m_nHeight];
+			m_tPixels[0] = new T[sizeof(T) * m_nWidth * m_nHeight];
+			for (int i = 1; i < m_nHeight; i++)
+				m_tPixels[i] = m_tPixels[i - 1] + m_nWidth;
+
+			memcpy(m_tPixels[0], img.m_tPixels[0], sizeof(T) * m_nWidth * m_nHeight);
+		}
+	}
 
 	//template<typename T>
 	IppImage<T>::~IppImage()
@@ -66,10 +87,45 @@ public:
 
 	T** GetPixels2D() const { return m_tPixels; }
 
-	IppImage<T>& operator=(const IppImage<T>& img);
-	template<typename U> IppImage<T>& operator=(const IppImage<U>& img);
+	IppImage<T>& operator=(const IppImage<T>& img)
+	{
+		if (this == &img)
+			return *this;
 
-	template<typename U> void Convert(const IppImage<U>& img, bool use_limit); // ??
+		CreateImage(img.m_nWidth, img.m_nHeight);
+		memcpy(m_tPixels[0], img.m_tPixels[0], sizeof(T) * m_nWidth * m_nHeight);
+
+		return *this;
+	}
+
+	template<typename U> IppImage<T>& operator=(const IppImage<U>& img)
+	{
+		if (this == &img)
+			return *this;
+
+		CreateImage(img.m_nWidth, img.m_nHeight);
+		memcpy(m_tPixels[0], img.m_tPixels[0], sizeof(T) * m_nWidth * m_nHeight);
+
+		return *this;
+
+	}
+
+
+	template<typename U> void Convert(const IppImage<U>& img, bool use_limit)
+	{
+		CreateImage(img.GetWidth(), img.GetHeight());
+
+		int size = GetSize();
+		T* p1 = GetPixels();
+		U* p2 = img.GetPixels();
+
+		if (use_limit)
+			for (int i = 0; i < size; i++)
+				p1[i] = static_cast<T>(limit(p2[i]));
+		else
+			for (int i = 0; i < size; i++)
+				p1[i] = static_cast<T>(p2[i]);
+	}
 
 	int GetWidth() const { return m_nWidth; }
 	int GetHeight() const { return m_nHeight; }

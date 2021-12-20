@@ -22,6 +22,12 @@
     <Filter Include="IppImage\헤더 파일">
       <UniqueIdentifier>{99f9f5d0-cf60-4f31-805c-f2a5ecf59b0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Dlg">
+      <UniqueIdentifier>{4e3592ec-af5e-4fdd-b20d-a904835a01cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Dlg">
+      <UniqueIdentifier>{1b62952a-b992-4dbb-8931-b21cbdcafa2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageTool.h">
@@ -54,9 +60,6 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FileNewDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="IppConvert.h">
       <Filter>IppImage\헤더 파일</Filter>
     </ClInclude>
@@ -75,14 +78,29 @@
     <ClInclude Include="BrightContrast.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="IppFilter.h">
+      <Filter>IppImage\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="FileNewDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
     <ClInclude Include="GammaDlg.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="GaussianDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
     </ClInclude>
     <ClInclude Include="HistogramDlg.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Dlg</Filter>
     </ClInclude>
     <ClInclude Include="ImageLogicalDlg.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="NoiseDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,9 +125,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FileNewDlg.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="IppConvertcpp.cpp">
       <Filter>IppImage\소스 파일</Filter>
     </ClCompile>
@@ -125,14 +140,29 @@
     <ClCompile Include="BrightContrast.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="IppFilter.cpp">
+      <Filter>IppImage\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffDlg.cpp">
+      <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="NoiseDlg.cpp">
+      <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="FileNewDlg.cpp">
+      <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
     <ClCompile Include="GammaDlg.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussianDlg.cpp">
+      <Filter>소스 파일\Dlg</Filter>
     </ClCompile>
     <ClCompile Include="HistogramDlg.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Dlg</Filter>
     </ClCompile>
     <ClCompile Include="ImageLogicalDlg.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Dlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
