@@ -10,22 +10,32 @@
 #include "ImageTool.h"
 #endif
 
+#pragma region Image header
+
 #include "IppImage.h"
 #include "IppConvert.h"
 #include "IppEnhance.h"
 #include "IppFilter.h"
-
+#include "IppGeometry.h"
 #include "BrightContrast.h"
-#include "GammaDlg.h"
+
+#pragma endregion
 
 #include "ImageToolDoc.h"
-#include "FileNewDlg.h"
+
+
+#pragma region Dlg header
 
 #include "HistogramDlg.h"
 #include "ImageLogicalDlg.h"
 #include "GaussianDlg.h"
 #include "NoiseDlg.h"
 #include "DiffDlg.h"
+#include "TranslateDlg.h"
+#include "FileNewDlg.h"
+#include "GammaDlg.h"
+
+#pragma endregion
 
 #include "MainFrm.h"
 
@@ -70,6 +80,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_NOISE, &CImageToolDoc::OnNoise)
 	ON_COMMAND(ID_MEDIAN, &CImageToolDoc::OnMedian)
 	ON_COMMAND(ID_DIFF, &CImageToolDoc::OnDiff)
+	ON_COMMAND(ID_TRANSLATE, &CImageToolDoc::OnTranslate)
 END_MESSAGE_MAP()
 
 
@@ -525,4 +536,20 @@ void CImageToolDoc::OnDiff()
 		AfxNewBitmap(dib);
 	}
 
+}
+
+
+void CImageToolDoc::OnTranslate()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CTranslateDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppTransLate(imgSrc, imgDst, dlg.m_nX, dlg.m_nY);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
 }
