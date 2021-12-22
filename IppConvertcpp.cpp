@@ -69,11 +69,11 @@ void IppImageToDib(IppFloatImage& img, IppDib& dib)
 	dib.CreatGrayBitmap(w, h);
 	BYTE* pDIBits = dib.GetDIBitsAddr();
 
-	for (int i = 0; i < h; i++)
+	for (int j = 0; j < h; j++)
 	{
-		for (int j = 0; i < w; j++)
+		for (int i = 0; i < w; i++)
 		{
-			pDIBits[(h - 1 - i) * ws + i] = static_cast<BYTE>(limit(pixels[j][i] + 0.5f)); // (h - 1 - i) 뒤집힌 형태이기 때문에 거꾸로 복사
+			pDIBits[(h - 1 - j) * ws + i] = static_cast<BYTE>(limit(pixels[j][i] + 0.5f)); // (h - 1 - i) 뒤집힌 형태이기 때문에 거꾸로 복사
 		}
 	}
 }

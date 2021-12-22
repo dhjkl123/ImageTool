@@ -34,6 +34,7 @@
 #include "TranslateDlg.h"
 #include "FileNewDlg.h"
 #include "GammaDlg.h"
+#include "ResizeDlg.h"
 
 #pragma endregion
 
@@ -81,6 +82,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_MEDIAN, &CImageToolDoc::OnMedian)
 	ON_COMMAND(ID_DIFF, &CImageToolDoc::OnDiff)
 	ON_COMMAND(ID_TRANSLATE, &CImageToolDoc::OnTranslate)
+	ON_COMMAND(ID_RESIZE, &CImageToolDoc::OnResize)
 END_MESSAGE_MAP()
 
 
@@ -552,4 +554,37 @@ void CImageToolDoc::OnTranslate()
 
 		AfxNewBitmap(dib);
 	}
+}
+
+
+void CImageToolDoc::OnResize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CResizeDlg dlg;
+	dlg.m_nOldHeight = m_Dib.GetHeight();
+	dlg.m_nOldWidth = m_Dib.GetWidth();
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		
+		switch (dlg.m_nSel)
+		{
+		case 0:
+			IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight);
+			break;
+		case 1:
+			IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight);
+			break;
+		case 2:
+			IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight);
+			break;
+
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
+
 }

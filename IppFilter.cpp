@@ -207,7 +207,7 @@ void IppFilterUnsharpMask(IppByteImage& imgSrc, IppByteImage& imgDst)
 	{
 		for (i = 1; i < w - 1; i++)
 		{
-			sum = 5 * pSrc[j][i] - pSrc[j - 1][i] + pSrc[j][i - 1] + pSrc[j + 1][i] - pSrc[j][i + 1];
+			sum = 5 * pSrc[j][i] - pSrc[j - 1][i] - pSrc[j][i - 1] - pSrc[j + 1][i] - pSrc[j][i + 1];
 
 			pDst[j][i] = static_cast<BYTE>(limit(sum));
 		}
@@ -231,7 +231,7 @@ void IppFilterHighboost(IppByteImage& imgSrc, IppByteImage& imgDst, float alpha)
 	{
 		for (i = 1; i < w - 1; i++)
 		{
-			sum = (4+alpha) * pSrc[j][i] - pSrc[j - 1][i] + pSrc[j][i - 1] + pSrc[j + 1][i] - pSrc[j][i + 1];
+			sum = (4+alpha) * pSrc[j][i] - pSrc[j - 1][i] - pSrc[j][i - 1] - pSrc[j + 1][i] - pSrc[j][i + 1];
 
 			pDst[j][i] = static_cast<BYTE>(limit(sum + 0.5f));
 		}
@@ -273,7 +273,7 @@ void IppNoiseSaltPepper(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
 	std::uniform_int_distribution<int> distribution(0, size - 1);
 
 	int num = size * amount / 100;
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < num; i++)
 	{
 		pDst[distribution(generator)] = (i & 0x01) * 255;
 	}
@@ -320,7 +320,7 @@ void IppFilterDiffusion(IppByteImage& imgSrc, IppFloatImage& imgDst, float lambd
 	int h = imgSrc.GetHeight();
 
 	IppFloatImage imgCpy;
-	imgCpy.Convert(imgSrc,1);
+	imgCpy.Convert(imgSrc,0);
 
 	imgDst = imgCpy;
 
@@ -352,10 +352,12 @@ void IppFilterDiffusion(IppByteImage& imgSrc, IppFloatImage& imgDst, float lambd
 
 			}
 
-			if (i < iter - 1)
-				memcpy(imgCpy.GetPixels(), imgDst.GetPixels(), sizeof(float) * w * h);
+
 
 		}
+
+		if (i < iter - 1)
+			memcpy(imgCpy.GetPixels(), imgDst.GetPixels(), sizeof(float) * w * h);
 	}
 }
 

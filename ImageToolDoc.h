@@ -71,4 +71,5 @@ public:
 	afx_msg void OnMedian();
 	afx_msg void OnDiff();
 	afx_msg void OnTranslate();
+	afx_msg void OnResize();
 };
