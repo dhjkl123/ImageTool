@@ -102,14 +102,20 @@
     <ClInclude Include="IppGeometry.h">
       <Filter>IppImage\헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TranslateDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="BrightContrast.h">
       <Filter>헤더 파일\Dlg</Filter>
     </ClInclude>
     <ClInclude Include="ResizeDlg.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="TranslateDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
+    <ClInclude Include="IppFeature.h">
+      <Filter>IppImage\헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,8 +185,14 @@
     <ClCompile Include="BrightContrast.cpp">
       <Filter>소스 파일\Dlg</Filter>
     </ClCompile>
+    <ClCompile Include="RotateDlg.cpp">
+      <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
     <ClCompile Include="ResizeDlg.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="IppFeature.cpp">
+      <Filter>IppImage\소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

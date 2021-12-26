@@ -35,6 +35,7 @@
 #define IDD_DIALOG_DIFF                 325
 #define IDD_DIALOG_TRANSLATE            327
 #define IDC_DIALOG_RESIZE               329
+#define IDD_DIALOG_ROTATE               332
 #define IDC_EDIT_WIDTH                  1000
 #define IDC_EDIT_HEIGHT                 1001
 #define IDC_COMBO_TYPE                  1002
@@ -69,6 +70,7 @@
 #define IDC_EDIT_H                      1023
 #define IDC_CHECK                       1024
 #define IDC_COMBO1                      1025
+#define IDC_EDIT1                       1026
 #define ID_32771                        32771
 #define ID_WINDOW_DUPUCATE              32772
 #define ID_32773                        32773
@@ -122,14 +124,27 @@
 #define ID_32821                        32821
 #define ID_RESI                         32822
 #define ID_RESIZE                       32823
+#define ID_32824                        32824
+#define ID_ROTATE                       32825
+#define ID_32826                        32826
+#define ID_32827                        32827
+#define ID_FLIP0                        32828
+#define ID_FLIP1                        32829
+#define ID_32830                        32830
+#define ID_32831                        32831
+#define ID_32832                        32832
+#define ID_32833                        32833
+#define ID_ROBERTS                      32834
+#define ID_PREWITT                      32835
+#define ID_SOBEL                        32836
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        332
-#define _APS_NEXT_COMMAND_VALUE         32824
-#define _APS_NEXT_CONTROL_VALUE         1026
+#define _APS_NEXT_RESOURCE_VALUE        334
+#define _APS_NEXT_COMMAND_VALUE         32837
+#define _APS_NEXT_CONTROL_VALUE         1027
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

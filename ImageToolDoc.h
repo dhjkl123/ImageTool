@@ -72,4 +72,10 @@ public:
 	afx_msg void OnDiff();
 	afx_msg void OnTranslate();
 	afx_msg void OnResize();
+	afx_msg void OnRotate();
+	afx_msg void OnFlip0();
+	afx_msg void OnFlip1();
+	afx_msg void OnRoberts();
+	afx_msg void OnPrewitt();
+	afx_msg void OnSobel();
 };

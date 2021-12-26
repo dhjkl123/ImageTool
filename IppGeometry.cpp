@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "IppGeometry.h"
 
+#include <math.h>
+
+const double PI = 3.1415926535897932;
+
 void IppTransLate(IppByteImage& imgSrc, IppByteImage& imgDst, int sx, int sy)
 {
 	int w = imgSrc.GetWidth();
@@ -182,5 +186,153 @@ double cubic_interpolation(double v1, double v2, double v3, double v4, double d)
 	v = (p1 + d * (p2 + d * (p3 + d * p4))) / 2;
 
 	return v;
+
+}
+
+void IppRotate(IppByteImage& imgSrc, IppByteImage& imgDst, double angle)
+{
+	int w = imgSrc.GetWidth();
+	int h = imgSrc.GetHeight();
+
+	if (angle == 90.0)
+	{
+		imgDst.CreateImage(h, w);
+
+		BYTE** pSrc = imgSrc.GetPixels2D();
+		BYTE** pDst = imgDst.GetPixels2D();
+
+		int i, j;
+		for (j = 0; j < w; j++)
+		{
+			for (i = 0; i < h; i++)
+			{
+				pDst[j][i] = pSrc[h - 1 - i][j];
+			}
+		}
+
+	}
+	else if (angle == 180.0)
+	{
+		imgDst.CreateImage(h, w);
+
+		BYTE** pSrc = imgSrc.GetPixels2D();
+		BYTE** pDst = imgDst.GetPixels2D();
+
+		int i, j;
+		for (j = 0; j < w; j++)
+		{
+			for (i = 0; i < h; i++)
+			{
+				pDst[j][i] = pSrc[h - 1 - j][w - 1 - i];
+			}
+		}
+	}
+	else if (angle == 270.0)
+	{
+		imgDst.CreateImage(h, w);
+
+		BYTE** pSrc = imgSrc.GetPixels2D();
+		BYTE** pDst = imgDst.GetPixels2D();
+
+		int i, j;
+		for (j = 0; j < w; j++)
+		{
+			for (i = 0; i < h; i++)
+			{
+				pDst[j][i] = pSrc[i][w - 1 - j];
+			}
+		}
+	}
+	else
+	{
+		double rad = (angle * PI) / 180;
+
+		double cos_value = cos(rad);
+		double sin_value = sin(rad);
+
+		int nx, ny, minx, miny, maxx, maxy, nw, nh;
+
+		minx = maxx = 0;
+		miny = maxy = 0;
+
+		nx = static_cast<int>(floor((w - 1) * cos_value + 0.5));
+		ny = static_cast<int>(floor((w - 1) * sin_value + 0.5));
+		minx = (minx < nx) ? minx : nx; maxx = (maxx > nx) ? maxx : nx;
+		miny = (miny < ny) ? miny : ny; maxy = (maxy > ny) ? maxy : ny;
+
+		nx = static_cast<int>(floor(-(h - 1) * sin_value + 0.5));
+		ny = static_cast<int>(floor((h - 1) * cos_value + 0.5));
+		minx = (minx < nx) ? minx : nx; maxx = (maxx > nx) ? maxx : nx;
+		miny = (miny < ny) ? miny : ny; maxy = (maxy > ny) ? maxy : ny;
+
+		nx = static_cast<int>(floor((w - 1) * cos_value - (h - 1) * sin_value + 0.5));
+		ny = static_cast<int>(floor((w - 1) * sin_value + (h - 1) * cos_value + 0.5));
+		minx = (minx < nx) ? minx : nx; maxx = (maxx > nx) ? maxx : nx;
+		miny = (miny < ny) ? miny : ny; maxy = (maxy > ny) ? maxy : ny;
+
+		nw = maxx - minx + 1;
+		nh = maxy - miny + 1;
+
+		imgDst.CreateImage(nw, nh);
+
+		BYTE** pSrc = imgSrc.GetPixels2D();
+		BYTE** pDst = imgDst.GetPixels2D();
+
+		int i, j, x1, x2, y1, y2;
+		double rx, ry, p, q, temp;
+
+		for (j = miny; j <= maxy; j++)
+		{
+			for (i = minx; i <= maxx; i++)
+			{
+				rx = i * cos_value + j * sin_value;
+				ry = -i * sin_value + j * cos_value;
+
+				x1 = static_cast<int>(rx);
+				y1 = static_cast<int>(ry);
+
+				if (x1<0 || x1>w - 1 || y1<0 || y1>h - 1)
+					continue;
+
+				x2 = x1 + 1; if (x2 == w) x2 = w - 1;
+				y2 = y1 + 1; if (y2 == h) y2 = h - 1;
+
+				p = rx - x1;
+				q = ry - y1;
+
+				temp = (1.0 - p) * (1.0 - q) * pSrc[y1][x1]
+					+ p * (1.0 - q) * pSrc[y1][x2]
+					+ (1.0 - p) * q * pSrc[y2][x1]
+					+ p * q * pSrc[y2][x2];
+
+				pDst[j - miny][i - minx] = static_cast<BYTE>(limit(temp));
+
+			}
+		}
+	}
+
+
+}
+
+void IppFlip(IppByteImage& imgSrc, IppByteImage& imgDst, bool bType) // 0: ÁÂ¿ì 1:»óÇÏ
+{
+	int w = imgSrc.GetWidth();
+	int h = imgSrc.GetHeight();
+
+	imgDst.CreateImage(w, h);
+
+	BYTE** pSrc = imgSrc.GetPixels2D();
+	BYTE** pDst = imgDst.GetPixels2D();
+
+	for (int j = 0; j < h; j++)
+	{
+		for (int i = 0; i < w; i++)
+		{
+			if (bType)
+				pDst[j][i] = pSrc[j][w - 1 - i];
+			else
+				pDst[j][i] = pSrc[h - 1 - j][i];
+		}
+	}
 
 }

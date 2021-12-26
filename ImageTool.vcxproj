@@ -198,6 +198,7 @@
     <ClInclude Include="IppConvert.h" />
     <ClInclude Include="IppDib.h" />
     <ClInclude Include="IppEnhance.h" />
+    <ClInclude Include="IppFeature.h" />
     <ClInclude Include="IppFilter.h" />
     <ClInclude Include="IppGeometry.h" />
     <ClInclude Include="IppImage.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="ResizeDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RGBBYTE.h" />
+    <ClInclude Include="RotateDlg.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TranslateDlg.h" />
   </ItemGroup>
@@ -215,6 +217,7 @@
     <ClCompile Include="BrightContrast.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiffDlg.cpp" />
+    <ClCompile Include="IppFeature.cpp" />
     <ClCompile Include="IppGeometry.cpp" />
     <ClCompile Include="NoiseDlg.cpp" />
     <ClCompile Include="FileNewDlg.cpp" />
@@ -239,6 +242,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ResizeDlg.cpp" />
+    <ClCompile Include="RotateDlg.cpp" />
     <ClCompile Include="TranslateDlg.cpp" />
   </ItemGroup>
   <ItemGroup>

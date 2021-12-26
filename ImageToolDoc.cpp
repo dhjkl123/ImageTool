@@ -18,6 +18,7 @@
 #include "IppFilter.h"
 #include "IppGeometry.h"
 #include "BrightContrast.h"
+#include "IppFeature.h"
 
 #pragma endregion
 
@@ -35,6 +36,7 @@
 #include "FileNewDlg.h"
 #include "GammaDlg.h"
 #include "ResizeDlg.h"
+#include "RotateDlg.h"
 
 #pragma endregion
 
@@ -83,6 +85,12 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_DIFF, &CImageToolDoc::OnDiff)
 	ON_COMMAND(ID_TRANSLATE, &CImageToolDoc::OnTranslate)
 	ON_COMMAND(ID_RESIZE, &CImageToolDoc::OnResize)
+	ON_COMMAND(ID_ROTATE, &CImageToolDoc::OnRotate)
+	ON_COMMAND(ID_FLIP0, &CImageToolDoc::OnFlip0)
+	ON_COMMAND(ID_FLIP1, &CImageToolDoc::OnFlip1)
+	ON_COMMAND(ID_ROBERTS, &CImageToolDoc::OnRoberts)
+	ON_COMMAND(ID_PREWITT, &CImageToolDoc::OnPrewitt)
+	ON_COMMAND(ID_SOBEL, &CImageToolDoc::OnSobel)
 END_MESSAGE_MAP()
 
 
@@ -587,4 +595,80 @@ void CImageToolDoc::OnResize()
 		AfxNewBitmap(dib);
 	}
 
+}
+
+
+void CImageToolDoc::OnRotate()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CRotateDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppRotate(imgSrc, imgDst, dlg.m_dbAngle);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
+}
+
+
+void CImageToolDoc::OnFlip0()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst,1);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnFlip1()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst, 0);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnRoberts()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppEdgeRoberts(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnPrewitt()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppEdgePrewitt(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+	
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnSobel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppEdgeSobel(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+	AfxNewBitmap(dib);
 }
