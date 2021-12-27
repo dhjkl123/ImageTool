@@ -117,6 +117,9 @@
     <ClInclude Include="IppFeature.h">
       <Filter>IppImage\헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CannyDlg.h">
+      <Filter>헤더 파일\Dlg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImageTool.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="IppFeature.cpp">
       <Filter>IppImage\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CannyDlg.cpp">
+      <Filter>소스 파일\Dlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

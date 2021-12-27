@@ -36,6 +36,7 @@
 #define IDD_DIALOG_TRANSLATE            327
 #define IDC_DIALOG_RESIZE               329
 #define IDD_DIALOG_ROTATE               332
+#define IDD_DIALOG_CANNY                334
 #define IDC_EDIT_WIDTH                  1000
 #define IDC_EDIT_HEIGHT                 1001
 #define IDC_COMBO_TYPE                  1002
@@ -71,6 +72,9 @@
 #define IDC_CHECK                       1024
 #define IDC_COMBO1                      1025
 #define IDC_EDIT1                       1026
+#define IDC_EDIT_GAUSSIAN               1027
+#define IDC_EDIT_LOW                    1028
+#define IDC_EDIT_HIGH                   1029
 #define ID_32771                        32771
 #define ID_WINDOW_DUPUCATE              32772
 #define ID_32773                        32773
@@ -137,14 +141,16 @@
 #define ID_ROBERTS                      32834
 #define ID_PREWITT                      32835
 #define ID_SOBEL                        32836
+#define ID_32837                        32837
+#define ID_CANNY                        32838
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        334
-#define _APS_NEXT_COMMAND_VALUE         32837
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_RESOURCE_VALUE        336
+#define _APS_NEXT_COMMAND_VALUE         32839
+#define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

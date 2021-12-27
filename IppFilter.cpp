@@ -84,7 +84,7 @@ void IppFilterWeightedMean(IppByteImage& imgSrc, IppByteImage& imgDst)
 
 }
 
-void IppFilterGaussian(IppByteImage& imgSrc, IppByteImage& imgDst, double sigma)
+void IppFilterGaussian(IppByteImage& imgSrc, IppFloatImage& imgDst, double sigma)
 {
 	register int i, j, k, x;
 
@@ -94,7 +94,7 @@ void IppFilterGaussian(IppByteImage& imgSrc, IppByteImage& imgDst, double sigma)
 	imgDst.CreateImage(w, h);
 
 	BYTE** pSrc = imgSrc.GetPixels2D();
-	BYTE** pDst = imgDst.GetPixels2D();
+	float** pDst = imgDst.GetPixels2D();
 
 	// 1차원 가우시안 마스크, 실수 연산을 위한 버퍼 이미지 생성
 
@@ -138,7 +138,7 @@ void IppFilterGaussian(IppByteImage& imgSrc, IppByteImage& imgDst, double sigma)
 				}
 			}
 
-			pDst[j][i] = sum2 / sum1;
+			pBuf[j][i] = sum2 / sum1;
 		}
 	}
 

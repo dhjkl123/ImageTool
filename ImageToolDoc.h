@@ -78,4 +78,5 @@ public:
 	afx_msg void OnRoberts();
 	afx_msg void OnPrewitt();
 	afx_msg void OnSobel();
+	afx_msg void OnCanny();
 };

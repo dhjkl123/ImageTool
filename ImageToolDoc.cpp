@@ -37,6 +37,7 @@
 #include "GammaDlg.h"
 #include "ResizeDlg.h"
 #include "RotateDlg.h"
+#include "CannyDlg.h"
 
 #pragma endregion
 
@@ -91,6 +92,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_ROBERTS, &CImageToolDoc::OnRoberts)
 	ON_COMMAND(ID_PREWITT, &CImageToolDoc::OnPrewitt)
 	ON_COMMAND(ID_SOBEL, &CImageToolDoc::OnSobel)
+	ON_COMMAND(ID_CANNY, &CImageToolDoc::OnCanny)
 END_MESSAGE_MAP()
 
 
@@ -453,7 +455,7 @@ void CImageToolDoc::OnFilterGaussian()
 	if (dlg.DoModal() == IDOK)
 	{
 		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			IppFloatImage imgDst;
 		IppFilterGaussian(imgSrc, imgDst,dlg.m_fSigma);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib);
 
@@ -671,4 +673,20 @@ void CImageToolDoc::OnSobel()
 	CONVERT_IMAGE_TO_DIB(imgDst, dib);
 
 	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnCanny()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CCannyDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppEdgeCanny(imgSrc, imgDst, dlg.m_fSigma, dlg.m_fLow, dlg.m_fHigh);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib);
+
+		AfxNewBitmap(dib);
+	}
 }
