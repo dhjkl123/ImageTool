@@ -236,11 +236,11 @@ void IppEdgeCanny(IppByteImage& imgSrc, IppByteImage& imgEdge, float sigma, floa
 		CHECK_WEAK_EDGE(x + 1, y);
 		CHECK_WEAK_EDGE(x + 1, y + 1);
 		CHECK_WEAK_EDGE(x, y + 1);
-		CHECK_WEAK_EDGE(x - 1, y + 1);
-		CHECK_WEAK_EDGE(x - 1, y);
-		CHECK_WEAK_EDGE(x - 1, y - 1);
-		CHECK_WEAK_EDGE(x, y - 1);
-		CHECK_WEAK_EDGE(x + 1, y - 1);
+CHECK_WEAK_EDGE(x - 1, y + 1);
+CHECK_WEAK_EDGE(x - 1, y);
+CHECK_WEAK_EDGE(x - 1, y - 1);
+CHECK_WEAK_EDGE(x, y - 1);
+CHECK_WEAK_EDGE(x + 1, y - 1);
 
 	}
 
@@ -251,6 +251,171 @@ void IppEdgeCanny(IppByteImage& imgSrc, IppByteImage& imgEdge, float sigma, floa
 			if (pEdge[j][i] == WEAK_EDGE) pEdge[j][i] = 0;
 		}
 	}
+
+
+}
+
+void IppHoughLine(IppByteImage& img, std::vector<IppLineParam>& lines, int threshold)
+{
+	register int i, j;
+
+	int w = img.GetWidth();
+	int h = img.GetHeight();
+
+	BYTE** ptr = img.GetPixels2D();
+
+	int num_rho = static_cast<int>(sqrt((double)w * w + h * h) * 2);
+	int num_ang = 360;
+
+	// 0~PI 각도에 해당하는 sin , cos 함수의 값을 룩업 테이블에 저장
+
+	float* sin_tbl = new float[num_ang];
+	float* cos_tbl = new float[num_ang];
+
+	for (i = 0; i < num_ang; i++)
+	{
+		sin_tbl[i] = sin(i * PI_F / num_ang);
+		cos_tbl[i] = cos(i * PI_F / num_ang);
+	}
+
+	// 축적 배열 생성
+
+	IppIntImage imgAcc(num_ang, num_rho);
+	int** pAcc = imgAcc.GetPixels2D();
+
+	int m, n;
+	for (j = 0; j < h; j++)
+	{
+		for (i = 0; i < w; i++)
+		{
+			if (ptr[j][i] > 128)
+			{
+				for (n = 0; n < num_ang; n++)
+				{
+					m = static_cast<int>(floor(i * sin_tbl[n] + j * cos_tbl[n] + 0.5f));
+					m += (num_rho / 2);
+
+					pAcc[m][n]++;
+				}
+			}
+		}
+	}
+
+	//임계값보다 큰 국지적 최댓값 최솟값을 찾아 직선 성분으로 결정
+
+	lines.clear();
+	int temp;
+	for (m = 0; m < num_rho; m++)
+	{
+		for (n = 0; n < num_ang; n++)
+		{
+			temp = pAcc[m][n];
+			if (temp > threshold)
+			{
+				if (temp > pAcc[m - 1][n] && temp > pAcc[m - 1][n + 1] &&
+					temp > pAcc[m][n + 1] && temp > pAcc[m + 1][n + 1] &&
+					temp > pAcc[m + 1][n] && temp > pAcc[m + 1][n - 1] &&
+					temp > pAcc[m][n - 1] && temp > pAcc[m - 1][n - 1])
+				{
+					lines.push_back(IppLineParam(m - (num_rho / 2), n * PI / num_ang, pAcc[m][n]));
+				}
+			}
+		}
+	}
+
+	delete[] sin_tbl;
+	delete[] cos_tbl;
+
+}
+
+void IppDrawLine(IppByteImage& img, IppLineParam line, BYTE c)
+{
+	int w = img.GetWidth();
+	int h = img.GetHeight();
+
+	int x1, x2, y1, y2;
+
+	if ((line.ang >= 0 && line.ang < PI / 4) || (line.ang >= 3 * PI / 4 && line.ang < PI))
+	{
+		x1 = 0;
+		y1 = static_cast<int>(floor(line.rho / cos(line.ang) + 5));
+		x2 = w - 1;
+		y2 = static_cast<int>(floor((line.rho - x2 * sin(line.ang)) / cos(line.ang) + 0.5));
+	}
+	else
+	{
+		y1 = 0;
+		x1 = static_cast<int>(floor(line.rho / sin(line.ang) + 5));
+		y2 = h - 1;
+		x2 = static_cast<int>(floor((line.rho - y2 * cos(line.ang)) / sin(line.ang) + 0.5));
+	}
+
+	IppDrawLine(img, x1, y1, x2, y2, c);
+
+}
+
+void IppDrawLine(IppByteImage& img, int x1, int y1, int x2, int y2, BYTE c)
+{
+	int w = img.GetWidth();
+	int h = img.GetHeight();
+
+	BYTE** ptr = img.GetPixels2D();
+
+	int dx, dy, inc_x, inc_y, fraction;
+
+	dx = x2 - x1;
+	inc_x = (dx > 0) ? 1 : -1;
+	dx = abs(dx) << 1;
+
+	dy = y2 - y1;
+	inc_y = (dy > 0) ? 1 : -1;
+	dy = abs(dy) << 1;
+
+	if (x1 >= 0 && x1 < w && y1 >= 0 && y1 < h)
+		ptr[y1][x1] = c;
+
+	if (dx >= dy)
+	{
+		fraction = dy - (dx >> 1);
+
+		while (x1 != x2)
+		{
+			if ((fraction >= 0) && (fraction || (inc_x > 0)))
+			{
+				fraction -= dx;
+				y1 += inc_y;
+			}
+
+			fraction += dy;
+			x1 += inc_x;
+
+			if (x1 >= 0 && x1 < w && y1 >= 0 && y1 < h)
+				ptr[y1][x1] = c;
+
+		}
+
+	}
+	else
+	{
+		fraction = dx - (dy >> 1);
+
+		while (y1 != y2)
+		{
+			if ((fraction >= 0) && (fraction || (inc_y > 0)))
+			{
+				fraction -= dy;
+				x1 += inc_x;
+			}
+
+			fraction += dx;
+			y1 += inc_y;
+
+			if (x1 >= 0 && x1 < w && y1 >= 0 && y1 < h)
+				ptr[y1][x1] = c;
+
+		}
+	}
+
 
 
 }

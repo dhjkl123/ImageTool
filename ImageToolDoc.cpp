@@ -43,6 +43,10 @@
 
 #include "MainFrm.h"
 
+#include <algorithm>
+#include <functional>
+#include <vector>
+
 #include <propkey.h>
 
 #ifdef _DEBUG
@@ -93,6 +97,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_PREWITT, &CImageToolDoc::OnPrewitt)
 	ON_COMMAND(ID_SOBEL, &CImageToolDoc::OnSobel)
 	ON_COMMAND(ID_CANNY, &CImageToolDoc::OnCanny)
+	ON_COMMAND(ID_HOUGH, &CImageToolDoc::OnHough)
 END_MESSAGE_MAP()
 
 
@@ -689,4 +694,33 @@ void CImageToolDoc::OnCanny()
 
 		AfxNewBitmap(dib);
 	}
+}
+
+
+void CImageToolDoc::OnHough()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppEdgeCanny(imgSrc, imgDst, 1.4f, 30.f, 60.f);
+
+	std::vector<IppLineParam> lines;
+	IppHoughLine(imgDst, lines);
+
+	if (lines.size() == 0)
+	{
+		AfxMessageBox(_T("No Lines on Image!"));
+		return;
+	}
+
+	std::sort(lines.begin(), lines.end());
+
+	int cnt = __min(10, lines.size());
+	for (int i = 0; i < cnt; i++)
+		IppDrawLine(imgSrc, lines[i], 255);
+
+	CONVERT_IMAGE_TO_DIB(imgSrc, dib);
+
+	AfxNewBitmap(dib);
+	
 }

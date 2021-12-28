@@ -79,4 +79,5 @@ public:
 	afx_msg void OnPrewitt();
 	afx_msg void OnSobel();
 	afx_msg void OnCanny();
+	afx_msg void OnHough();
 };
