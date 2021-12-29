@@ -80,4 +80,5 @@ public:
 	afx_msg void OnSobel();
 	afx_msg void OnCanny();
 	afx_msg void OnHough();
+	afx_msg void OnCorner();
 };

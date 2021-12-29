@@ -42,3 +42,5 @@ inline bool operator< (const IppLineParam& lhs, const IppLineParam& rhs)
 void IppHoughLine(IppByteImage& img, std::vector<IppLineParam>& lines, int threshold = 60);
 void IppDrawLine(IppByteImage& img, IppLineParam line, BYTE c);
 void IppDrawLine(IppByteImage& img, int x1, int y1, int x2, int y2, BYTE c);
+
+void IppHarrisCorner(IppByteImage& img, std::vector<IppPoint>& corners, double th);

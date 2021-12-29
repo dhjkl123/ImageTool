@@ -186,6 +186,7 @@
     <ClInclude Include="BrightContrast.h" />
     <ClInclude Include="CannyDlg.h" />
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="CornerDlg.h" />
     <ClInclude Include="DiffDlg.h" />
     <ClInclude Include="FileNewDlg.h" />
     <ClInclude Include="framework.h" />
@@ -217,6 +218,7 @@
   <ItemGroup>
     <ClCompile Include="BrightContrast.cpp" />
     <ClCompile Include="CannyDlg.cpp" />
+    <ClCompile Include="CornerDlg.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiffDlg.cpp" />
     <ClCompile Include="IppFeature.cpp" />

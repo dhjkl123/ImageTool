@@ -38,6 +38,8 @@
 #include "ResizeDlg.h"
 #include "RotateDlg.h"
 #include "CannyDlg.h"
+#include "CornerDlg.h"
+
 
 #pragma endregion
 
@@ -98,6 +100,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_SOBEL, &CImageToolDoc::OnSobel)
 	ON_COMMAND(ID_CANNY, &CImageToolDoc::OnCanny)
 	ON_COMMAND(ID_HOUGH, &CImageToolDoc::OnHough)
+	ON_COMMAND(ID_CORNER, &CImageToolDoc::OnCorner)
 END_MESSAGE_MAP()
 
 
@@ -723,4 +726,37 @@ void CImageToolDoc::OnHough()
 
 	AfxNewBitmap(dib);
 	
+}
+
+
+void CImageToolDoc::OnCorner()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CCornerDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			std::vector<IppPoint> corners;
+		IppHarrisCorner(imgSrc, corners, dlg.m_nth);
+
+		BYTE** ptr = imgSrc.GetPixels2D();
+
+		int x, y;
+		for (IppPoint cp : corners)
+		{
+			x = cp.x;
+			y = cp.y;
+
+			ptr[y - 1][x - 1] = ptr[y - 1][x] = ptr[y - 1][x + 1] = 0;
+			ptr[y][x - 1] = ptr[y][x] = ptr[y][x + 1] = 0;
+			ptr[y + 1][x - 1] = ptr[y + 1][x] = ptr[y + 1][x + 1] = 0;
+
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgSrc, dib);
+
+		AfxNewBitmap(dib);
+
+	}
 }
