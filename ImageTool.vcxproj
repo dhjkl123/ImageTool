@@ -202,6 +202,7 @@
     <ClInclude Include="IppEnhance.h" />
     <ClInclude Include="IppFeature.h" />
     <ClInclude Include="IppFilter.h" />
+    <ClInclude Include="IppFourier.h" />
     <ClInclude Include="IppGeometry.h" />
     <ClInclude Include="IppImage.h" />
     <ClInclude Include="MainFrm.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiffDlg.cpp" />
     <ClCompile Include="IppFeature.cpp" />
+    <ClCompile Include="IppFourier.cpp" />
     <ClCompile Include="IppGeometry.cpp" />
     <ClCompile Include="NoiseDlg.cpp" />
     <ClCompile Include="FileNewDlg.cpp" />
