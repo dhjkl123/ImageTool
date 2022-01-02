@@ -19,6 +19,7 @@
 #include "IppGeometry.h"
 #include "BrightContrast.h"
 #include "IppFeature.h"
+#include "IppFourier.h"
 
 #pragma endregion
 
@@ -48,6 +49,9 @@
 #include <algorithm>
 #include <functional>
 #include <vector>
+#include <mmsystem.h>
+
+#pragma comment(lib,"winmm.lib")
 
 #include <propkey.h>
 
@@ -64,6 +68,7 @@
 	IppDib dib;\
 	IppImageToDib(img, dib);
 
+#define SHOW_SOECTRUM_PHASE_IMAGE
 // CImageToolDoc
 
 IMPLEMENT_DYNCREATE(CImageToolDoc, CDocument)
@@ -101,6 +106,8 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_CANNY, &CImageToolDoc::OnCanny)
 	ON_COMMAND(ID_HOUGH, &CImageToolDoc::OnHough)
 	ON_COMMAND(ID_CORNER, &CImageToolDoc::OnCorner)
+	ON_COMMAND(ID_DFT, &CImageToolDoc::OnDft)
+	ON_COMMAND(ID_DRTRC, &CImageToolDoc::OnDrtrc)
 END_MESSAGE_MAP()
 
 
@@ -759,4 +766,81 @@ void CImageToolDoc::OnCorner()
 		AfxNewBitmap(dib);
 
 	}
+}
+
+
+void CImageToolDoc::OnDft()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+
+		IppFourier fourier;
+	fourier.SetImage(imgSrc);
+
+	DWORD t1 = timeGetTime();
+	fourier.DFT(1);
+
+#ifdef SHOW_SOECTRUM_PHASE_IMAGE
+
+	IppByteImage imgSpec;
+	fourier.GetSpectrumImage(imgSpec);
+
+	CONVERT_IMAGE_TO_DIB(imgSpec, dibSpec);
+	AfxNewBitmap(dibSpec);
+
+	IppByteImage imgPhase;
+	fourier.GetPhaseImage(imgPhase);
+
+	CONVERT_IMAGE_TO_DIB(imgPhase, dibPhase);
+	AfxNewBitmap(dibPhase);
+
+#endif
+	
+	fourier.DFT(-1);
+	DWORD t2 = timeGetTime();
+
+	IppByteImage img2;
+	fourier.GetImage(img2);
+
+	CONVERT_IMAGE_TO_DIB(img2, dib);
+	AfxNewBitmap(dib);
+
+}
+
+
+void CImageToolDoc::OnDrtrc()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+
+		IppFourier fourier;
+	fourier.SetImage(imgSrc);
+
+	DWORD t1 = timeGetTime();
+	fourier.DFTRC(1);
+
+#ifdef SHOW_SOECTRUM_PHASE_IMAGE
+
+	IppByteImage imgSpec;
+	fourier.GetSpectrumImage(imgSpec);
+
+	CONVERT_IMAGE_TO_DIB(imgSpec, dibSpec);
+	AfxNewBitmap(dibSpec);
+
+	IppByteImage imgPhase;
+	fourier.GetPhaseImage(imgPhase);
+
+	CONVERT_IMAGE_TO_DIB(imgPhase, dibPhase);
+	AfxNewBitmap(dibPhase);
+
+#endif
+
+	fourier.DFTRC(-1);
+	DWORD t2 = timeGetTime();
+
+	IppByteImage img2;
+	fourier.GetImage(img2);
+
+	CONVERT_IMAGE_TO_DIB(img2, dib);
+	AfxNewBitmap(dib);
 }

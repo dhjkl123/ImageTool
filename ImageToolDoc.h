@@ -81,4 +81,6 @@ public:
 	afx_msg void OnCanny();
 	afx_msg void OnHough();
 	afx_msg void OnCorner();
+	afx_msg void OnDft();
+	afx_msg void OnDrtrc();
 };
