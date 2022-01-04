@@ -204,7 +204,7 @@ void IppFourier::DFTRC(int dir)
 		for (i = 0; i < m_nWidth; i++)
 		{			
 			pReTmp[i] = pRe[j][i];
-			pImTmp[i] = pRe[j][i];
+			pImTmp[i] = pIm[j][i];
 			
 		}
 
@@ -235,7 +235,7 @@ void IppFourier::DFTRC(int dir)
 		for (j = 0; j < m_nHeight; j++)
 		{
 			pReTmp[j] = pRe[j][i];
-			pImTmp[j] = pRe[j][i];
+			pImTmp[j] = pIm[j][i];
 
 		}
 
@@ -308,7 +308,7 @@ void IppFourier::FFT(int dir)
 		for (j = 0; j < m_nHeight; j++)
 		{
 			re[j] = pRe[j][i];
-			im[j] = pRe[j][i];
+			im[j] = pIm[j][i];
 
 		}
 
