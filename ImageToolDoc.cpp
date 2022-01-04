@@ -108,6 +108,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_CORNER, &CImageToolDoc::OnCorner)
 	ON_COMMAND(ID_DFT, &CImageToolDoc::OnDft)
 	ON_COMMAND(ID_DRTRC, &CImageToolDoc::OnDrtrc)
+	ON_COMMAND(ID_FOURIERFFT, &CImageToolDoc::OnFourierfft)
 END_MESSAGE_MAP()
 
 
@@ -844,3 +845,46 @@ void CImageToolDoc::OnDrtrc()
 	CONVERT_IMAGE_TO_DIB(img2, dib);
 	AfxNewBitmap(dib);
 }
+
+
+void CImageToolDoc::OnFourierfft()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	
+	if (!IsPowerof2(m_Dib.GetWidth()) || !IsPowerof2(m_Dib.GetHeight()))
+		return;
+
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+
+		IppFourier fourier;
+	fourier.SetImage(imgSrc);
+
+	DWORD t1 = timeGetTime();
+	fourier.FFT(1);
+
+#ifdef SHOW_SOECTRUM_PHASE_IMAGE
+
+	IppByteImage imgSpec;
+	fourier.GetSpectrumImage(imgSpec);
+
+	CONVERT_IMAGE_TO_DIB(imgSpec, dibSpec);
+	AfxNewBitmap(dibSpec);
+
+	IppByteImage imgPhase;
+	fourier.GetPhaseImage(imgPhase);
+
+	CONVERT_IMAGE_TO_DIB(imgPhase, dibPhase);
+	AfxNewBitmap(dibPhase);
+
+#endif
+
+	fourier.FFT(-1);
+	DWORD t2 = timeGetTime();
+
+	IppByteImage img2;
+	fourier.GetImage(img2);
+
+	CONVERT_IMAGE_TO_DIB(img2, dib);
+	AfxNewBitmap(dib);
+}
+

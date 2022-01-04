@@ -83,4 +83,5 @@ public:
 	afx_msg void OnCorner();
 	afx_msg void OnDft();
 	afx_msg void OnDrtrc();
+	afx_msg void OnFourierfft();
 };

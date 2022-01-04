@@ -2,6 +2,7 @@
 #include "IppFourier.h"
 
 #include <math.h>
+#include <algorithm>
 
 const double PI = 3.14159265358979323846;
 
@@ -16,7 +17,7 @@ void IppFourier::SetImage(IppByteImage& img)
 	m_nWidth = img.GetWidth();
 	m_nHeight = img.GetHeight();
 
-	m_Real.Convert(img, 0);
+	m_Real.Convert(img, 1);
 	m_Imag.CreateImage(m_nWidth, m_nHeight);
 
 }
@@ -250,6 +251,79 @@ void IppFourier::DFTRC(int dir)
 
 }
 
+void IppFourier::FFT(int dir)
+{
+	if (!m_Real.IsValid())
+		return;
+
+	if (!IsPowerof2(m_nWidth) || !IsPowerof2(m_nHeight))
+		return;
+
+	//행단위 이산 푸리에 변환
+
+	IppDoubleImage real_tmp, imag_tmp;
+
+	real_tmp.CreateImage(m_nWidth, 1);
+	imag_tmp.CreateImage(m_nWidth, 1);
+
+	double* re = real_tmp.GetPixels();
+	double* im = imag_tmp.GetPixels();
+
+	double** pRe = m_Real.GetPixels2D();
+	double** pIm = m_Imag.GetPixels2D();
+
+	register int i, j;
+	// 행 단위 이산 푸리에 변환
+	for (j = 0; j < m_nHeight; j++)
+	{
+		for (i = 0; i < m_nWidth; i++)
+		{
+			re[i] = pRe[j][i];
+			im[i] = pIm[j][i];
+		}
+
+		FFT1d(re, im, m_nWidth,  dir);
+
+		for (i = 0; i < m_nWidth; i++)
+		{
+			pRe[j][i] = re[i];
+			pIm[j][i] = im[i];
+		}
+
+	}
+
+	//열 단위 이산푸리에 변환
+	real_tmp.CreateImage(m_nHeight, 1);
+	imag_tmp.CreateImage(m_nHeight, 1);
+
+	re = real_tmp.GetPixels();
+	im = imag_tmp.GetPixels();
+
+	memset(re, 0, sizeof(double) * m_nHeight);
+	memset(im, 0, sizeof(double) * m_nHeight);
+
+	// 이산 푸리에 변환
+	for (i = 0; i < m_nWidth; i++)
+	{
+		for (j = 0; j < m_nHeight; j++)
+		{
+			re[j] = pRe[j][i];
+			im[j] = pRe[j][i];
+
+		}
+
+		FFT1d(re, im, m_nHeight, dir);
+
+		for (j = 0; j < m_nHeight; j++)
+		{
+			pRe[j][i] = re[j];
+			pIm[j][i] = im[j];
+
+		}
+	}
+}
+
+
 void DFT1d(double* re, double* im, int N, int dir)
 {
 	double* tr = new double[N];
@@ -288,5 +362,106 @@ void DFT1d(double* re, double* im, int N, int dir)
 
 	delete[] tr;
 	delete[] ti;
+
+}
+
+void FFT1d(double* re, double* im, int N, int dir)
+{
+	register int i, j, k;
+
+	//입력 데이터 순서 바꾸기
+
+	int n2 = N >> 1;
+	int nb = 0;
+
+	while (N != (1 << nb))
+		nb++;
+
+	for (i = 0, j = 0; i < N - 1; i++)
+	{
+		if (i < j)
+		{
+			std::swap(re[i], re[j]);
+			std::swap(im[i], im[j]);
+		}
+
+		k = n2;
+
+		while (k <= j)
+		{
+			j -= k;
+			k >>= 1;
+		}
+
+		j += k;
+
+	}
+
+	//버터플라이 알고리즘
+
+	int i1, l, l1, l2;
+	double c1, c2, t1, t2, u1, u2, z;
+
+	c1 = -1.0;
+	c2 = 0.0;
+	l2 = 1;
+
+	for (l = 0; l < nb; l++)
+	{
+		l1 = l2;
+		l2 <<= 1;
+		u1 = 1.0;
+		u2 = 0.0;
+
+		for (j = 0; j < l1; j++)
+		{
+			for (i = j; i < N; i += l2)
+			{
+				i1 = i + l1;
+				t1 = u1 * re[i1] - u2 * im[i1];
+				t2 = u1 * im[i1] + u2 * re[i1];
+				re[i1] = re[i] - t1;
+				im[i1] = im[i] - t2;
+				re[i] += t1;
+				im[i] += t2;
+			}
+
+			z = u1 * c1 - u2 * c2;
+			u2 = u1 * c2 + u2 * c1;
+			u1 = z;
+
+		}
+
+		c2 = sqrt((1.0 - c1) / 2.0);
+		if (dir == 1) //forward
+			c2 = -c2;
+
+		c1 = sqrt((1.0 + c1) / 2.0);
+
+	}
+
+	if (dir == -1) //IDFT
+	{
+		for (i = 0; i < N; i++)
+		{
+			re[i] /= static_cast<double>(N);
+			im[i] /= static_cast<double>(N);
+		}
+	}
+
+
+}
+
+bool IsPowerof2(int n)
+{
+	int ref = 1;
+
+	while (ref < n)
+		ref <<= 1;
+
+	if (ref == n)
+		return true;
+	else
+		return false;
 
 }
