@@ -84,4 +84,5 @@ public:
 	afx_msg void OnDft();
 	afx_msg void OnDrtrc();
 	afx_msg void OnFourierfft();
+	afx_msg void OnFrqFilter();
 };

@@ -323,6 +323,122 @@ void IppFourier::FFT(int dir)
 	}
 }
 
+void IppFourier::LowPassIdeal(int cutoff)
+{
+	register int i, j, x, y;
+
+	int cx = m_nWidth / 2;
+	int cy = m_nHeight / 2;
+
+	double** pRe = m_Real.GetPixels2D();
+	double** pIm = m_Imag.GetPixels2D();
+
+	for (j = 0; j < m_nHeight; j++)
+	{
+		for (i = 0; i < m_nWidth; i++)
+		{
+			x = i + cx;
+			y = j + cy;
+
+			if (x >= m_nWidth) x -= m_nWidth;
+			if (y >= m_nHeight) y -= m_nHeight;
+
+			if ((x - cx) * (x - cx) + (y - cy) * (y - cy) > (cutoff * cutoff))
+				pRe[j][i] = pIm[j][i] = 0.;
+		}
+	}
+
+}
+
+void IppFourier::HighPassIdeal(int cutoff)
+{
+	register int i, j, x, y;
+
+	int cx = m_nWidth / 2;
+	int cy = m_nHeight / 2;
+
+	double** pRe = m_Real.GetPixels2D();
+	double** pIm = m_Imag.GetPixels2D();
+
+	for (j = 0; j < m_nHeight; j++)
+	{
+		for (i = 0; i < m_nWidth; i++)
+		{
+			x = i + cx;
+			y = j + cy;
+
+			if (x >= m_nWidth) x -= m_nWidth;
+			if (y >= m_nHeight) y -= m_nHeight;
+
+			if ((x - cx) * (x - cx) + (y - cy) * (y - cy) < (cutoff * cutoff))
+				pRe[j][i] = pIm[j][i] = 0.;
+		}
+	}
+}
+
+void IppFourier::LowPassGaussian(int cutoff)
+{
+	register int i, j, x, y;
+	double dist2, hval;
+
+	int cx = m_nWidth / 2;
+	int cy = m_nHeight / 2;
+
+	double** pRe = m_Real.GetPixels2D();
+	double** pIm = m_Imag.GetPixels2D();
+
+	for (j = 0; j < m_nHeight; j++)
+	{
+		for (i = 0; i < m_nWidth; i++)
+		{
+			x = i + cx;
+			y = j + cy;
+
+			if (x >= m_nWidth) x -= m_nWidth;
+			if (y >= m_nHeight) y -= m_nHeight;
+
+			dist2 = static_cast<double>((x - cx) * (x - cx) + (y - cy) * (y - cy));
+
+			hval = exp(-dist2 / (2 * cutoff * cutoff));
+
+			pRe[j][i] *= hval;
+			pIm[j][i] *= hval;
+
+		}
+	}
+}
+
+void IppFourier::HighPassGaussian(int cutoff)
+{
+	register int i, j, x, y;
+	double dist2, hval;
+
+	int cx = m_nWidth / 2;
+	int cy = m_nHeight / 2;
+
+	double** pRe = m_Real.GetPixels2D();
+	double** pIm = m_Imag.GetPixels2D();
+
+	for (j = 0; j < m_nHeight; j++)
+	{
+		for (i = 0; i < m_nWidth; i++)
+		{
+			x = i + cx;
+			y = j + cy;
+
+			if (x >= m_nWidth) x -= m_nWidth;
+			if (y >= m_nHeight) y -= m_nHeight;
+
+			dist2 = static_cast<double>((x - cx) * (x - cx) + (y - cy) * (y - cy));
+
+			hval = 1.0 - exp(-dist2 / (2 * cutoff * cutoff));
+
+			pRe[j][i] *= hval;
+			pIm[j][i] *= hval;
+
+		}
+	}
+}
 
 void DFT1d(double* re, double* im, int N, int dir)
 {

@@ -190,6 +190,7 @@
     <ClInclude Include="DiffDlg.h" />
     <ClInclude Include="FileNewDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="FreqFilterDlg.h" />
     <ClInclude Include="GammaDlg.h" />
     <ClInclude Include="GaussianDlg.h" />
     <ClInclude Include="HistogramDlg.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="CornerDlg.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiffDlg.cpp" />
+    <ClCompile Include="FreqFilterDlg.cpp" />
     <ClCompile Include="IppFeature.cpp" />
     <ClCompile Include="IppFourier.cpp" />
     <ClCompile Include="IppGeometry.cpp" />

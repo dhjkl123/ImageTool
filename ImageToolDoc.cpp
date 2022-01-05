@@ -40,7 +40,7 @@
 #include "RotateDlg.h"
 #include "CannyDlg.h"
 #include "CornerDlg.h"
-
+#include "FreqFilterDlg.h"
 
 #pragma endregion
 
@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_DFT, &CImageToolDoc::OnDft)
 	ON_COMMAND(ID_DRTRC, &CImageToolDoc::OnDrtrc)
 	ON_COMMAND(ID_FOURIERFFT, &CImageToolDoc::OnFourierfft)
+	ON_COMMAND(ID_FRQ_FILTER, &CImageToolDoc::OnFrqFilter)
 END_MESSAGE_MAP()
 
 
@@ -888,3 +889,42 @@ void CImageToolDoc::OnFourierfft()
 	AfxNewBitmap(dib);
 }
 
+
+
+void CImageToolDoc::OnFrqFilter()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CFreqFilterDlg dlg;
+	dlg.m_strRange.Format(_T("(0 ~ %d)"), __min(m_Dib.GetWidth() / 2, m_Dib.GetHeight() / 2));
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib,img)
+		IppFourier fourier;
+		fourier.SetImage(img);
+		fourier.FFT(1);
+
+		if (dlg.m_nFilterType == 0)
+		{
+			if (dlg.m_nFilterShape == 0)
+				fourier.LowPassIdeal(dlg.m_nCutOff);
+			else
+				fourier.LowPassGaussian(dlg.m_nCutOff);
+		}
+		else
+		{
+			if (dlg.m_nFilterShape == 0)
+				fourier.HighPassIdeal(dlg.m_nCutOff);
+			else
+				fourier.HighPassGaussian(dlg.m_nCutOff);
+		}
+
+		fourier.FFT(-1);
+
+		IppByteImage img2;
+		fourier.GetImage(img2);
+		CONVERT_IMAGE_TO_DIB(img2, dib);
+
+		AfxNewBitmap(dib);
+
+	}
+}
