@@ -2,6 +2,8 @@
 
 #include "RGBBYTE.h"
 
+#define RGB2GRAY(r,g,b) (0.299*(r) + 0.578*(g) + 0.114*(b))
+
 template<typename T>
 class IppImage
 {
@@ -111,6 +113,7 @@ public:
 	}
 
 
+
 	template<typename U> void Convert(const IppImage<U>& img, bool use_limit)
 	{
 		CreateImage(img.GetWidth(), img.GetHeight());
@@ -125,6 +128,18 @@ public:
 		else
 			for (int i = 0; i < size; i++)
 				p1[i] = static_cast<T>(p2[i]);
+	}
+
+	void Convert(const IppImage<RGBBYTE>& img)
+	{
+		CreateImage(img.GetWidth(), img.GetHeight());
+
+		int size = GetSize();
+		T* p1 = GetPixels();
+		RGBBYTE* p2 = img.GetPixels();
+
+		for (int i = 0; i < size; i++)
+			p1[i] = static_cast<T>(RGB2GRAY(p2[i].r, p2[i].g, p2[i].b));
 	}
 
 	int GetWidth() const { return m_nWidth; }

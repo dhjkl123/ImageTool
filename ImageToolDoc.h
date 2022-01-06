@@ -85,4 +85,5 @@ public:
 	afx_msg void OnDrtrc();
 	afx_msg void OnFourierfft();
 	afx_msg void OnFrqFilter();
+	afx_msg void OnRgb2gray();
 };

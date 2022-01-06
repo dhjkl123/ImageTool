@@ -198,6 +198,7 @@
     <ClInclude Include="ImageTool.h" />
     <ClInclude Include="ImageToolDoc.h" />
     <ClInclude Include="ImageToolView.h" />
+    <ClInclude Include="IppColor.h" />
     <ClInclude Include="IppConvert.h" />
     <ClInclude Include="IppDib.h" />
     <ClInclude Include="IppEnhance.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiffDlg.cpp" />
     <ClCompile Include="FreqFilterDlg.cpp" />
+    <ClCompile Include="IppColor.cpp" />
     <ClCompile Include="IppFeature.cpp" />
     <ClCompile Include="IppFourier.cpp" />
     <ClCompile Include="IppGeometry.cpp" />

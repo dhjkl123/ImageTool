@@ -161,13 +161,15 @@
 #define ID_FOURIERFFT                   32849
 #define ID_32850                        32850
 #define ID_FRQ_FILTER                   32851
+#define ID_32852                        32852
+#define ID_RGB2GRAY                     32853
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        341
-#define _APS_NEXT_COMMAND_VALUE         32852
+#define _APS_NEXT_COMMAND_VALUE         32854
 #define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

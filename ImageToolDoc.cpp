@@ -20,6 +20,7 @@
 #include "BrightContrast.h"
 #include "IppFeature.h"
 #include "IppFourier.h"
+#include "IppColor.h"
 
 #pragma endregion
 
@@ -69,6 +70,10 @@
 	IppImageToDib(img, dib);
 
 #define SHOW_SOECTRUM_PHASE_IMAGE
+
+#define CONVERT_DIB_TO_RGBIMAGE(m_Dib,img)\
+IppRGBBYTEImage img;\
+IppDibToImage(m_Dib,img);
 // CImageToolDoc
 
 IMPLEMENT_DYNCREATE(CImageToolDoc, CDocument)
@@ -110,6 +115,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_DRTRC, &CImageToolDoc::OnDrtrc)
 	ON_COMMAND(ID_FOURIERFFT, &CImageToolDoc::OnFourierfft)
 	ON_COMMAND(ID_FRQ_FILTER, &CImageToolDoc::OnFrqFilter)
+	ON_COMMAND(ID_RGB2GRAY, &CImageToolDoc::OnRgb2gray)
 END_MESSAGE_MAP()
 
 
@@ -304,19 +310,31 @@ void CImageToolDoc::OnEditPaste()
 void CImageToolDoc::OnImageInverse()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CONVERT_DIB_TO_BYTEIMAGE(m_Dib,img)
-	IppInverse(img);
+	if (m_Dib.GetBitCount() == 8)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+			IppInverse(img);
 
-	CONVERT_IMAGE_TO_DIB(img, dib)
+		CONVERT_IMAGE_TO_DIB(img, dib)
 
-	AfxNewBitmap(dib);
+			AfxNewBitmap(dib);
+	}
+	else if (m_Dib.GetBitCount() == 24)
+	{
+		CONVERT_DIB_TO_RGBIMAGE(m_Dib, img)
+			IppInverse(img);
+
+		CONVERT_IMAGE_TO_DIB(img, dib)
+
+			AfxNewBitmap(dib);
+	}
 }
 
 
 void CImageToolDoc::OnUpdateImageInverse(CCmdUI* pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-	pCmdUI->Enable(m_Dib.GetBitCount() == 8);
+	pCmdUI->Enable(m_Dib.GetBitCount() == 8 || m_Dib.GetBitCount() == 24);
 }
 
 
@@ -927,4 +945,17 @@ void CImageToolDoc::OnFrqFilter()
 		AfxNewBitmap(dib);
 
 	}
+}
+
+
+void CImageToolDoc::OnRgb2gray()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_RGBIMAGE(m_Dib, imgColor)
+		IppByteImage imgGray;
+	imgGray.Convert(imgColor);
+	CONVERT_IMAGE_TO_DIB(imgGray,dib)
+
+		AfxNewBitmap(dib);
+
 }

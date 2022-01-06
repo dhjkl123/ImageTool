@@ -86,7 +86,7 @@ void IppImageToDib(IppRGBBYTEImage& img, IppDib& dib)
 	int ws = (w * 3+3) & ~3; // 가로 한줄을 저장하기 위해 필요한 바이트 수 (4배수)
 	RGBBYTE** pixels = img.GetPixels2D();
 
-	dib.CreatGrayBitmap(w, h);
+	dib.CreatRgbBitmap(w, h);
 	BYTE* pDIBits = dib.GetDIBitsAddr();
 
 	for (int i = 0; i < h; i++)
