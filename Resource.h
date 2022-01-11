@@ -39,6 +39,7 @@
 #define IDD_DIALOG_CANNY                334
 #define IDD_DIALOG_CORNER               336
 #define IDD_DIALOG_FREQUENCY_FILTERING  338
+#define IDD_DIALOG_COLOR_COMBINE        341
 #define IDC_EDIT_WIDTH                  1000
 #define IDC_EDIT_HEIGHT                 1001
 #define IDC_COMBO_TYPE                  1002
@@ -75,11 +76,14 @@
 #define IDC_CHECK                       1024
 #define IDC_COMBO1                      1025
 #define IDC_EDIT1                       1026
+#define IDC_COMBO2                      1026
 #define IDC_EDIT_GAUSSIAN               1027
+#define IDC_COMBO3                      1027
 #define IDC_EDIT_LOW                    1028
 #define IDC_EDIT_TH                     1028
 #define IDC_EDIT_HIGH                   1029
 #define IDC_STATIC_RANGE                1029
+#define IDC_EDIT_COLOR_SPACE            1030
 #define ID_32771                        32771
 #define ID_WINDOW_DUPUCATE              32772
 #define ID_32773                        32773
@@ -163,14 +167,28 @@
 #define ID_FRQ_FILTER                   32851
 #define ID_32852                        32852
 #define ID_RGB2GRAY                     32853
+#define ID_32854                        32854
+#define ID_32855                        32855
+#define ID_32856                        32856
+#define ID_32857                        32857
+#define ID_RGB                          32858
+#define ID_HSI                          32859
+#define ID_YUV                          32860
+#define ID_32861                        32861
+#define ID_32862                        32862
+#define ID_32863                        32863
+#define ID_32864                        32864
+#define ID_RGB_COMBINE                  32865
+#define ID_HSI_COMBINE                  32866
+#define ID_YUV_COMBINE                  32867
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        341
-#define _APS_NEXT_COMMAND_VALUE         32854
-#define _APS_NEXT_CONTROL_VALUE         1030
+#define _APS_NEXT_RESOURCE_VALUE        343
+#define _APS_NEXT_COMMAND_VALUE         32868
+#define _APS_NEXT_CONTROL_VALUE         1032
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

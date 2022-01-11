@@ -42,6 +42,7 @@
 #include "CannyDlg.h"
 #include "CornerDlg.h"
 #include "FreqFilterDlg.h"
+#include "ColorCombineDlg.h"
 
 #pragma endregion
 
@@ -116,6 +117,15 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_FOURIERFFT, &CImageToolDoc::OnFourierfft)
 	ON_COMMAND(ID_FRQ_FILTER, &CImageToolDoc::OnFrqFilter)
 	ON_COMMAND(ID_RGB2GRAY, &CImageToolDoc::OnRgb2gray)
+	ON_COMMAND(ID_RGB, &CImageToolDoc::OnRgb)
+	ON_UPDATE_COMMAND_UI(ID_RGB, &CImageToolDoc::OnUpdateRgb)
+	ON_COMMAND(ID_HSI, &CImageToolDoc::OnHsi)
+	ON_UPDATE_COMMAND_UI(ID_HSI, &CImageToolDoc::OnUpdateHsi)
+	ON_COMMAND(ID_YUV, &CImageToolDoc::OnYuv)
+	ON_UPDATE_COMMAND_UI(ID_YUV, &CImageToolDoc::OnUpdateYuv)
+	ON_COMMAND(ID_RGB_COMBINE, &CImageToolDoc::OnRgbCombine)
+	ON_COMMAND(ID_HSI_COMBINE, &CImageToolDoc::OnHsiCombine)
+	ON_COMMAND(ID_YUV_COMBINE, &CImageToolDoc::OnYuvCombine)
 END_MESSAGE_MAP()
 
 
@@ -958,4 +968,162 @@ void CImageToolDoc::OnRgb2gray()
 
 		AfxNewBitmap(dib);
 
+}
+
+
+void CImageToolDoc::OnRgb()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_RGBIMAGE(m_Dib, imgColor)
+		IppByteImage imgR, imgG, imgB;
+	IppColorSplitRGB(imgColor, imgR, imgG, imgB);
+	CONVERT_IMAGE_TO_DIB(imgR, dibR)
+		CONVERT_IMAGE_TO_DIB(imgG, dibG)
+		CONVERT_IMAGE_TO_DIB(imgB, dibB)
+
+		AfxNewBitmap(dibR);
+	AfxNewBitmap(dibG);
+	AfxNewBitmap(dibB);
+
+
+}
+
+
+void CImageToolDoc::OnUpdateRgb(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(m_Dib.GetBitCount() == 24);
+}
+
+
+void CImageToolDoc::OnHsi()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_RGBIMAGE(m_Dib, imgColor)
+		IppByteImage imgR, imgG, imgB;
+	IppColorSplitHSI(imgColor, imgR, imgG, imgB);
+	CONVERT_IMAGE_TO_DIB(imgR, dibR)
+		CONVERT_IMAGE_TO_DIB(imgG, dibG)
+		CONVERT_IMAGE_TO_DIB(imgB, dibB)
+
+		AfxNewBitmap(dibR);
+	AfxNewBitmap(dibG);
+	AfxNewBitmap(dibB);
+}
+
+
+void CImageToolDoc::OnUpdateHsi(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(m_Dib.GetBitCount() == 24);
+}
+
+
+void CImageToolDoc::OnYuv()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_RGBIMAGE(m_Dib, imgColor)
+		IppByteImage imgR, imgG, imgB;
+	IppColorSplitYUV(imgColor, imgR, imgG, imgB);
+	CONVERT_IMAGE_TO_DIB(imgR, dibR)
+		CONVERT_IMAGE_TO_DIB(imgG, dibG)
+		CONVERT_IMAGE_TO_DIB(imgB, dibB)
+
+		AfxNewBitmap(dibR);
+	AfxNewBitmap(dibG);
+	AfxNewBitmap(dibB);
+}
+
+
+void CImageToolDoc::OnUpdateYuv(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(m_Dib.GetBitCount() == 24);
+}
+
+
+void CImageToolDoc::OnRgbCombine()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CColorCombineDlg dlg;
+	dlg.m_strColorSpace = _T("RGB 합치기");
+	if (dlg.DoModal() == IDOK)
+	{
+		CImageToolDoc* pDoc1 = (CImageToolDoc*)dlg.m_pDoc1;
+		CImageToolDoc* pDoc2 = (CImageToolDoc*)dlg.m_pDoc2;
+		CImageToolDoc* pDoc3 = (CImageToolDoc*)dlg.m_pDoc3;
+
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc1->m_Dib, imgR);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc2->m_Dib, imgG);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc3->m_Dib, imgB);
+
+		IppRGBBYTEImage imgColor;
+		if (IppColorCombineRGB(imgR, imgG, imgB, imgColor) == false)
+		{
+			AfxMessageBox(_T("영상의 크기가 다릅니다!"));
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgColor, dib)
+
+			AfxNewBitmap(dib);
+
+	}
+}
+
+
+void CImageToolDoc::OnHsiCombine()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CColorCombineDlg dlg;
+	dlg.m_strColorSpace = _T("HSI 합치기");
+	if (dlg.DoModal() == IDOK)
+	{
+		CImageToolDoc* pDoc1 = (CImageToolDoc*)dlg.m_pDoc1;
+		CImageToolDoc* pDoc2 = (CImageToolDoc*)dlg.m_pDoc2;
+		CImageToolDoc* pDoc3 = (CImageToolDoc*)dlg.m_pDoc3;
+
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc1->m_Dib, imgH);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc2->m_Dib, imgS);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc3->m_Dib, imgI);
+
+		IppRGBBYTEImage imgColor;
+		if (IppColorCombineHSI(imgH, imgS, imgI, imgColor) == false)
+		{
+			AfxMessageBox(_T("영상의 크기가 다릅니다!"));
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgColor, dib)
+
+			AfxNewBitmap(dib);
+
+	}
+}
+
+
+void CImageToolDoc::OnYuvCombine()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CColorCombineDlg dlg;
+	dlg.m_strColorSpace = _T("YUV 합치기");
+	if (dlg.DoModal() == IDOK)
+	{
+		CImageToolDoc* pDoc1 = (CImageToolDoc*)dlg.m_pDoc1;
+		CImageToolDoc* pDoc2 = (CImageToolDoc*)dlg.m_pDoc2;
+		CImageToolDoc* pDoc3 = (CImageToolDoc*)dlg.m_pDoc3;
+
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc1->m_Dib, imgY);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc2->m_Dib, imgU);
+		CONVERT_DIB_TO_BYTEIMAGE(pDoc3->m_Dib, imgV);
+
+		IppRGBBYTEImage imgColor;
+		if (IppColorCombineYUV(imgY, imgU, imgV, imgColor) == false)
+		{
+			AfxMessageBox(_T("영상의 크기가 다릅니다!"));
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgColor, dib)
+
+			AfxNewBitmap(dib);
+
+	}
 }

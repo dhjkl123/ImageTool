@@ -86,4 +86,13 @@ public:
 	afx_msg void OnFourierfft();
 	afx_msg void OnFrqFilter();
 	afx_msg void OnRgb2gray();
+	afx_msg void OnRgb();
+	afx_msg void OnUpdateRgb(CCmdUI* pCmdUI);
+	afx_msg void OnHsi();
+	afx_msg void OnUpdateHsi(CCmdUI* pCmdUI);
+	afx_msg void OnYuv();
+	afx_msg void OnUpdateYuv(CCmdUI* pCmdUI);
+	afx_msg void OnRgbCombine();
+	afx_msg void OnHsiCombine();
+	afx_msg void OnYuvCombine();
 };
