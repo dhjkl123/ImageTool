@@ -181,13 +181,17 @@
 #define ID_RGB_COMBINE                  32865
 #define ID_HSI_COMBINE                  32866
 #define ID_YUV_COMBINE                  32867
+#define ID_32868                        32868
+#define ID_EDGE_COLOR                   32869
+#define ID_32870                        32870
+#define ID_32871                        32871
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
-#define _APS_NEXT_COMMAND_VALUE         32868
+#define _APS_NEXT_COMMAND_VALUE         32872
 #define _APS_NEXT_CONTROL_VALUE         1032
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

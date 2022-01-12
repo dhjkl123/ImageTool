@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "IppColor.h"
+#include "IppFeature.h"
 
 const double PI = 3.14159265358979323846;
 
@@ -281,5 +282,36 @@ bool IppColorCombineYUV(IppByteImage& imgY, IppByteImage& imgU, IppByteImage& im
 	}
 
 	return true;
+
+}
+
+void IppColorEdge(IppRGBBYTEImage& imgSrc, IppByteImage& imgEdge)
+{
+	IppByteImage imgY, imgU, imgV;
+	IppColorSplitYUV(imgSrc, imgY, imgU, imgV);
+
+	IppByteImage EdgeY, EdgeU, EdgeV;
+	IppEdgePrewitt(imgY, EdgeY);
+	IppEdgePrewitt(imgU, EdgeU);
+	IppEdgePrewitt(imgV, EdgeV);
+
+	int w = imgSrc.GetWidth();
+	int h = imgSrc.GetHeight();
+	int size = imgSrc.GetSize();
+
+	imgEdge.CreateImage(w, h);
+	BYTE* pEdge = imgEdge.GetPixels();
+
+	BYTE* pY = EdgeY.GetPixels();
+	BYTE* pU = EdgeU.GetPixels();
+	BYTE* pV = EdgeV.GetPixels();
+
+	double dist;
+	for (int i = 0; i < size; i++)
+	{
+		dist = (pY[i] * pY[i]) + (0.5 * pU[i]) * (0.5 * pU[i]) + (0.5 * pV[i]) * (0.5 * pV[i]);
+		pEdge[i] = static_cast<BYTE>(limit(sqrt(dist)));
+	}
+
 
 }

@@ -126,6 +126,8 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_RGB_COMBINE, &CImageToolDoc::OnRgbCombine)
 	ON_COMMAND(ID_HSI_COMBINE, &CImageToolDoc::OnHsiCombine)
 	ON_COMMAND(ID_YUV_COMBINE, &CImageToolDoc::OnYuvCombine)
+	ON_COMMAND(ID_EDGE_COLOR, &CImageToolDoc::OnEdgeColor)
+	ON_UPDATE_COMMAND_UI(ID_EDGE_COLOR, &CImageToolDoc::OnUpdateEdgeColor)
 END_MESSAGE_MAP()
 
 
@@ -405,11 +407,26 @@ void CImageToolDoc::OnHistogramStretch()
 void CImageToolDoc::OnHistogramEq()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
-		IppHistogramEQ(img);
-	CONVERT_IMAGE_TO_DIB(img, dib)
+	if (m_Dib.GetBitCount() == 8)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+			IppHistogramEQ(img);
+		CONVERT_IMAGE_TO_DIB(img, dib)
 
-		AfxNewBitmap(dib);
+			AfxNewBitmap(dib);
+	}
+	else if (m_Dib.GetBitCount() == 24)
+	{
+		CONVERT_DIB_TO_RGBIMAGE(m_Dib, img);
+		IppByteImage imgY, imgU, imgV;
+		IppColorSplitYUV(img, imgY, imgU, imgV);
+		IppHistogramEQ(imgY);
+		IppRGBBYTEImage imgRes;
+		IppColorCombineYUV(imgY, imgU, imgV, imgRes);
+		CONVERT_IMAGE_TO_DIB(imgRes, dib)
+
+			AfxNewBitmap(dib);
+	}
 }
 
 
@@ -1126,4 +1143,24 @@ void CImageToolDoc::OnYuvCombine()
 			AfxNewBitmap(dib);
 
 	}
+}
+
+
+void CImageToolDoc::OnEdgeColor()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_RGBIMAGE(m_Dib, img)
+		IppByteImage imgEdge;
+	IppColorEdge(img, imgEdge);
+	CONVERT_IMAGE_TO_DIB(imgEdge, dib);
+
+	AfxNewBitmap(dib);
+}
+
+
+void CImageToolDoc::OnUpdateEdgeColor(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(m_Dib.GetBitCount() == 24);
+
 }

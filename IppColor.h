@@ -13,6 +13,7 @@ void IppColorSplitYUV(IppRGBBYTEImage& imgColor, IppByteImage& imgY, IppByteImag
 bool IppColorCombineRGB(IppByteImage& imgR, IppByteImage& imgG, IppByteImage& imgB, IppRGBBYTEImage& imgColor);
 bool IppColorCombineHSI(IppByteImage& imgH, IppByteImage& imgS, IppByteImage& imgI, IppRGBBYTEImage& imgColor);
 bool IppColorCombineYUV(IppByteImage& imgY, IppByteImage& imgU, IppByteImage& imgV, IppRGBBYTEImage& imgColor);
+void IppColorEdge(IppRGBBYTEImage& imgSrc, IppByteImage& imgEdge);
 
 
 template<typename T>

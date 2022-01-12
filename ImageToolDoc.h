@@ -95,4 +95,6 @@ public:
 	afx_msg void OnRgbCombine();
 	afx_msg void OnHsiCombine();
 	afx_msg void OnYuvCombine();
+	afx_msg void OnEdgeColor();
+	afx_msg void OnUpdateEdgeColor(CCmdUI* pCmdUI);
 };
