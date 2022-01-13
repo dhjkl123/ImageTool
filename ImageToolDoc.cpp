@@ -43,6 +43,9 @@
 #include "CornerDlg.h"
 #include "FreqFilterDlg.h"
 #include "ColorCombineDlg.h"
+#include "IppSegment.h"
+#include "BinaryDlg.h"
+
 
 #pragma endregion
 
@@ -128,6 +131,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_YUV_COMBINE, &CImageToolDoc::OnYuvCombine)
 	ON_COMMAND(ID_EDGE_COLOR, &CImageToolDoc::OnEdgeColor)
 	ON_UPDATE_COMMAND_UI(ID_EDGE_COLOR, &CImageToolDoc::OnUpdateEdgeColor)
+	ON_COMMAND(ID_BINARY, &CImageToolDoc::OnBinary)
 END_MESSAGE_MAP()
 
 
@@ -1163,4 +1167,21 @@ void CImageToolDoc::OnUpdateEdgeColor(CCmdUI* pCmdUI)
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	pCmdUI->Enable(m_Dib.GetBitCount() == 24);
 
+}
+
+
+void CImageToolDoc::OnBinary()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CBinaryDlg dlg;
+	dlg.SetImage(m_Dib);
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+			IppByteImage imgRes;
+		IppBinarization(img,imgRes, dlg.m_nTh);
+		CONVERT_IMAGE_TO_DIB(imgRes, dib)
+
+			AfxNewBitmap(dib);
+	}
 }

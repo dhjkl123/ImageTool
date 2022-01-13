@@ -135,6 +135,12 @@
     <ClInclude Include="ColorCombineDlg.h">
       <Filter>헤더 파일\Dlg</Filter>
     </ClInclude>
+    <ClInclude Include="IppSegment.h">
+      <Filter>IppImage\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImageTool.cpp">
@@ -229,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="ColorCombineDlg.cpp">
       <Filter>소스 파일\Dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="IppSegment.cpp">
+      <Filter>IppImage\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryDlg.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

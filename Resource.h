@@ -40,6 +40,7 @@
 #define IDD_DIALOG_CORNER               336
 #define IDD_DIALOG_FREQUENCY_FILTERING  338
 #define IDD_DIALOG_COLOR_COMBINE        341
+#define IDD_DIALOG_BIN                  343
 #define IDC_EDIT_WIDTH                  1000
 #define IDC_EDIT_HEIGHT                 1001
 #define IDC_COMBO_TYPE                  1002
@@ -84,6 +85,8 @@
 #define IDC_EDIT_HIGH                   1029
 #define IDC_STATIC_RANGE                1029
 #define IDC_EDIT_COLOR_SPACE            1030
+#define IDC_SLIDER_TH                   1032
+#define IDC_PREVIEW                     1033
 #define ID_32771                        32771
 #define ID_WINDOW_DUPUCATE              32772
 #define ID_32773                        32773
@@ -185,14 +188,16 @@
 #define ID_EDGE_COLOR                   32869
 #define ID_32870                        32870
 #define ID_32871                        32871
+#define ID_32872                        32872
+#define ID_BINARY                       32873
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        343
-#define _APS_NEXT_COMMAND_VALUE         32872
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_RESOURCE_VALUE        345
+#define _APS_NEXT_COMMAND_VALUE         32874
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
