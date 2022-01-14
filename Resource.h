@@ -190,13 +190,15 @@
 #define ID_32871                        32871
 #define ID_32872                        32872
 #define ID_BINARY                       32873
+#define ID_32874                        32874
+#define ID_LABEL                        32875
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
-#define _APS_NEXT_COMMAND_VALUE         32874
+#define _APS_NEXT_COMMAND_VALUE         32876
 #define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

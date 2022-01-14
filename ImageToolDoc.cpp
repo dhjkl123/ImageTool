@@ -132,6 +132,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_EDGE_COLOR, &CImageToolDoc::OnEdgeColor)
 	ON_UPDATE_COMMAND_UI(ID_EDGE_COLOR, &CImageToolDoc::OnUpdateEdgeColor)
 	ON_COMMAND(ID_BINARY, &CImageToolDoc::OnBinary)
+	ON_COMMAND(ID_LABEL, &CImageToolDoc::OnLabel)
 END_MESSAGE_MAP()
 
 
@@ -1184,4 +1185,39 @@ void CImageToolDoc::OnBinary()
 
 			AfxNewBitmap(dib);
 	}
+}
+
+
+void CImageToolDoc::OnLabel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppIntImage imgLabel;
+	std::vector<IppLabelInfo> labels;
+	int label_cnt = IppLabeling(img, imgLabel, labels);
+	/*
+	BYTE** ptr = img.GetPixels2D();
+	for (IppLabelInfo& info : labels)
+	{
+		for (int j = info.miny; j <= info.maxy; j++)
+			ptr[j][info.minx] = ptr[j][info.maxx] = 128;
+
+		for (int i = info.minx; i <= info.maxx; i++)
+			ptr[info.miny][i] = ptr[info.maxy][i] = 128;
+	}
+	*/
+
+	for (IppLabelInfo& info : labels)
+	{
+		IppByteImage imgObj(info.maxx - info.minx + 1, info.maxy - info.miny + 1);
+		BYTE** pObj = imgObj.GetPixels2D();
+		for (IppPoint& pt : info.pixels)
+			pObj[pt.y - info.miny][pt.x - info.minx] = 255;
+
+		CONVERT_IMAGE_TO_DIB(imgObj, dib)
+			AfxNewBitmap(dib);
+	}
+
+
+
 }

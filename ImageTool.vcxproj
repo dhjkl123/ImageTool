@@ -118,6 +118,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <HeapReserveSize>9000000</HeapReserveSize>
+      <HeapCommitSize>9000000</HeapCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
