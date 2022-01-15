@@ -99,4 +99,5 @@ public:
 	afx_msg void OnUpdateEdgeColor(CCmdUI* pCmdUI);
 	afx_msg void OnBinary();
 	afx_msg void OnLabel();
+	afx_msg void OnContuor();
 };

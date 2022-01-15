@@ -133,6 +133,7 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_EDGE_COLOR, &CImageToolDoc::OnUpdateEdgeColor)
 	ON_COMMAND(ID_BINARY, &CImageToolDoc::OnBinary)
 	ON_COMMAND(ID_LABEL, &CImageToolDoc::OnLabel)
+	ON_COMMAND(ID_CONTUOR, &CImageToolDoc::OnContuor)
 END_MESSAGE_MAP()
 
 
@@ -1195,6 +1196,7 @@ void CImageToolDoc::OnLabel()
 		IppIntImage imgLabel;
 	std::vector<IppLabelInfo> labels;
 	int label_cnt = IppLabeling(img, imgLabel, labels);
+
 	/*
 	BYTE** ptr = img.GetPixels2D();
 	for (IppLabelInfo& info : labels)
@@ -1220,4 +1222,29 @@ void CImageToolDoc::OnLabel()
 
 
 
+}
+
+
+void CImageToolDoc::OnContuor()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppIntImage imgLabel;
+	std::vector<IppLabelInfo> labels;
+	int label_cnt = IppLabeling(img, imgLabel, labels);
+
+	IppByteImage imgContour(img.GetWidth(), img.GetHeight());
+	BYTE** ptr = imgContour.GetPixels2D();
+	for (IppLabelInfo& info : labels)
+	{
+		std::vector<IppPoint> cp;
+		IppContourTracing(img, info.pixels[0].x, info.pixels[0].y, cp);
+
+		for (IppPoint& pt : cp)
+			ptr[pt.y][pt.x] = 255;
+	}
+
+	CONVERT_IMAGE_TO_DIB(imgContour, dib)
+
+		AfxNewBitmap(dib);
 }

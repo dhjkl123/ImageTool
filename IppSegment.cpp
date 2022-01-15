@@ -207,3 +207,65 @@ int IppLabeling(IppByteImage& imgSrc, IppIntImage& imgDst, std::vector<IppLabelI
 	return (label_cnt - 1);
 
 }
+
+void IppContourTracing(IppByteImage& imgSrc, int sx, int sy, std::vector<IppPoint>& cp)
+{
+	int w = imgSrc.GetWidth();
+	int h = imgSrc.GetHeight();
+
+	BYTE** pSrc = imgSrc.GetPixels2D();
+
+	cp.clear();
+
+	if (pSrc[sy][sx] != 255)
+		return;
+
+	int x, y, nx, ny;
+	int d, cnt;
+	int dir[8][2] = {
+		{1,0},
+		{1,1},
+		{0,1},
+		{-1,1},
+		{-1,0},
+		{-1,-1},
+		{0,-1},
+		{1,-1}
+	};
+
+	x = sx;
+	y = sy;
+	d = cnt = 0;
+
+	while (1)
+	{
+		nx = x + dir[d][0];
+		ny = y + dir[d][1];
+
+		if (nx < 0 || nx >= w || ny < 0 || ny >= h || pSrc[ny][nx] == 0)
+		{
+			if (++d > 7) d = 0;
+			cnt++;
+
+			if (cnt >= 8)
+			{
+				cp.push_back(IppPoint(x, y));
+				break;
+			}
+		}
+		else
+		{
+			cp.push_back(IppPoint(x, y));
+
+			x = nx;
+			y = ny;
+
+			cnt = 0;
+			d = (d + 6) % 8;
+		}
+
+		if (x == sx && y == sy && d == 0)
+			break;
+	}
+
+}
