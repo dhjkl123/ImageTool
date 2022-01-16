@@ -100,4 +100,12 @@ public:
 	afx_msg void OnBinary();
 	afx_msg void OnLabel();
 	afx_msg void OnContuor();
+	afx_msg void OnErosion();
+	afx_msg void OnDilation();
+	afx_msg void OnOpening();
+	afx_msg void OnClosing();
+	afx_msg void OnGrayErosion();
+	afx_msg void OnGrayDilation();
+	afx_msg void OnGrayOpening();
+	afx_msg void OnGrayClosing();
 };

@@ -134,6 +134,14 @@ BEGIN_MESSAGE_MAP(CImageToolDoc, CDocument)
 	ON_COMMAND(ID_BINARY, &CImageToolDoc::OnBinary)
 	ON_COMMAND(ID_LABEL, &CImageToolDoc::OnLabel)
 	ON_COMMAND(ID_CONTUOR, &CImageToolDoc::OnContuor)
+	ON_COMMAND(ID_EROSION, &CImageToolDoc::OnErosion)
+	ON_COMMAND(ID_DILATION, &CImageToolDoc::OnDilation)
+	ON_COMMAND(ID_OPENING, &CImageToolDoc::OnOpening)
+	ON_COMMAND(ID_CLOSING, &CImageToolDoc::OnClosing)
+	ON_COMMAND(ID_GRAY_EROSION, &CImageToolDoc::OnGrayErosion)
+	ON_COMMAND(ID_GRAY_DILATION, &CImageToolDoc::OnGrayDilation)
+	ON_COMMAND(ID_GRAY_OPENING, &CImageToolDoc::OnGrayOpening)
+	ON_COMMAND(ID_GRAY_CLOSING, &CImageToolDoc::OnGrayClosing)
 END_MESSAGE_MAP()
 
 
@@ -1246,5 +1254,85 @@ void CImageToolDoc::OnContuor()
 
 	CONVERT_IMAGE_TO_DIB(imgContour, dib)
 
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnErosion()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyErosion(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnDilation()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyDilation(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnOpening()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyOpening(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnClosing()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyClosing(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnGrayErosion()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyGrayErosion(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnGrayDilation()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyGrayDilation(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnGrayOpening()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyGrayOpening(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxNewBitmap(dib);
+}
+
+void CImageToolDoc::OnGrayClosing()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img)
+		IppByteImage imgDst;
+	IppMorphologyGrayClosing(img, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxNewBitmap(dib);
 }
